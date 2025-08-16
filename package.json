@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "rolldown -c rolldown.config.ts -w",
     "clean": "rimraf dist",
-    "build": "npm run clean && rolldown -c rolldown.config.ts && tsc -p tsconfig.build.json"
+    "build": "npm run clean && rolldown -c rolldown.config.ts && tsc -p tsconfig.build.json",
+    "gen:exports": "node ./scripts/generate-exports.mjs"
   },
   "exports": {
     "./server": {
@@ -31,6 +32,7 @@
   ],
   "devDependencies": {
     "@hono/node-server": "^1.18.2",
+    "@types/node": "^24.3.0",
     "hono": "^4.9.2",
     "ky": "^1.8.2",
     "rimraf": "^6.0.1",
