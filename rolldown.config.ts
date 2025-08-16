@@ -18,6 +18,22 @@ export default defineConfig([
       },
     ],
   },
+  {
+    input: "src/server/node/index.ts",
+    output: [
+      {
+        file: "dist/server/node/index.js",
+        format: "es",
+        sourcemap: true,
+      },
+      {
+        file: "dist/server/node/index.cjs",
+        format: "cjs",
+        exports: "named",
+        sourcemap: true,
+      },
+    ]
+  },
   // Client (KY: https://github.com/sindresorhus/ky)
   {
     input: "src/client/index.ts",

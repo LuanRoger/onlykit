@@ -15,6 +15,11 @@
       "import": "./dist/server/index.js",
       "require": "./dist/server/index.cjs"
     },
+    "./server/node": {
+      "types": "./dist/server/node/index.d.ts",
+      "import": "./dist/server/node/index.js",
+      "require": "./dist/server/node/index.cjs"
+    },
     "./client": {
       "types": "./dist/client/index.d.ts",
       "import": "./dist/client/index.js",
@@ -25,6 +30,7 @@
     "dist"
   ],
   "devDependencies": {
+    "@hono/node-server": "^1.18.2",
     "hono": "^4.9.2",
     "ky": "^1.8.2",
     "rimraf": "^6.0.1",
