@@ -16,6 +16,9 @@
     "check:write": "biome check --write",
     "gen:exports": "node ./scripts/generate-exports.mjs"
   },
+  "bin": {
+    "only": "./dist/cli/index.js"
+  },
   "exports": {
     "./server": {
       "types": "./dist/server/index.d.ts",

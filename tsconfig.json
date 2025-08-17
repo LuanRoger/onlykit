@@ -20,8 +20,12 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@lib/*": ["./lib/*"]
+    }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "examples"],
+  "exclude": ["node_modules", "dist", "examples"]
 }
