@@ -9,8 +9,17 @@ export default defineConfig([
       file: "dist/cli/index.js",
       format: "es",
       sourcemap: true,
+      inlineDynamicImports: true,
     },
-    external: ["vite", "node:path", "node:fs", "node:child_process"],
+    external: [
+      "node:path",
+      "node:fs",
+      "node:child_process",
+      "rollup",
+      "@rollup/plugin-typescript",
+      "@rollup/plugin-node-resolve",
+      "@rollup/plugin-commonjs",
+    ],
   },
   // Server (Hono: https://github.com/honojs/hono)
   {
