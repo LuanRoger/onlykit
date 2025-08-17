@@ -57,7 +57,7 @@ async function cmdDev() {
   const input = findDefaultInput();
   if (!input) {
     console.error(
-      "No entry found. Create one of: src/index.ts, src/main.ts, src/index.js, or pass your own rollup.config.*"
+      "No entry found. Create one of: src/index.ts, src/main.ts, src/index.js, or pass your own rollup.config.*",
     );
     process.exit(1);
   }
@@ -86,7 +86,7 @@ async function cmdBuild() {
   const input = findDefaultInput();
   if (!input) {
     console.error(
-      "No entry found. Create one of: src/index.ts, src/main.ts, src/index.js, or add rollup.config.*"
+      "No entry found. Create one of: src/index.ts, src/main.ts, src/index.js, or add rollup.config.*",
     );
     process.exit(1);
   }
@@ -103,7 +103,7 @@ async function cmdBuild() {
 
 async function cmdPreview() {
   console.log(
-    "Preview is not available for Rollup. Serve your 'dist' folder with any HTTP server."
+    "Preview is not available for Rollup. Serve your 'dist' folder with any HTTP server.",
   );
 }
 
