@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import { copyFile, mkdir } from "node:fs/promises";
-import { JsonModuleMetadata } from "../types/modules";
+import type { JsonModuleMetadata } from "../types/modules";
 import { outRoot, srcRoot } from "../constants";
 
 export async function copyJsonModule(jsonModule: JsonModuleMetadata) {
@@ -10,7 +10,7 @@ export async function copyJsonModule(jsonModule: JsonModuleMetadata) {
     outRoot,
     packageName,
     moduleName,
-    sourceName
+    sourceName,
   );
   const destinationDir = path.join(outRoot, packageName, moduleName);
 

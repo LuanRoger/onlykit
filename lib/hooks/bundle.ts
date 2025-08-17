@@ -1,4 +1,4 @@
-import { JsonModuleMetadata } from "../types/modules";
+import type { JsonModuleMetadata } from "../types/modules";
 import { copyJsonModule } from "../utils/file";
 
 export const jsonModules: JsonModuleMetadata[] = [
