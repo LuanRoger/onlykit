@@ -2,6 +2,16 @@ import { defineConfig } from "rolldown";
 import { copyJson } from "./lib";
 
 export default defineConfig([
+  // CLI
+  {
+    input: "src/cli/index.ts",
+    output: {
+      file: "dist/cli/index.js",
+      format: "es",
+      sourcemap: true,
+    },
+    external: ["vite", "node:path", "node:fs", "node:child_process"],
+  },
   // Server (Hono: https://github.com/honojs/hono)
   {
     input: "src/server/index.ts",
