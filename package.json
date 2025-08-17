@@ -8,6 +8,12 @@
     "dev": "rolldown -c rolldown.config.ts -w",
     "clean": "rimraf dist",
     "build": "npm run clean && rolldown -c rolldown.config.ts && tsc -p tsconfig.build.json",
+    "lint": "biome lint",
+    "lint:write": "biome lint --write",
+    "format": "biome format",
+    "format:write": "biome format --write",
+    "check": "biome check",
+    "check:write": "biome check --write",
     "gen:exports": "node ./scripts/generate-exports.mjs"
   },
   "exports": {
@@ -25,18 +31,29 @@
       "types": "./dist/client/index.d.ts",
       "import": "./dist/client/index.js",
       "require": "./dist/client/index.cjs"
-    }
+    },
+    "./dev": {
+      "types": "./dist/dev/index.d.ts",
+      "import": "./dist/dev/index.js",
+      "require": "./dist/dev/index.cjs"
+    },
+    "./dev/ts-config/base.json": "./dist/dev/ts-config/base.json",
+    "./dev/biome/biome.json": "./dist/dev/biome/biome.json"
   },
   "files": [
     "dist"
   ],
-  "devDependencies": {
+  "peerDependencies": {
     "@hono/node-server": "^1.18.2",
-    "@types/node": "^24.3.0",
     "hono": "^4.9.2",
     "ky": "^1.8.2",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.2",
+    "@biomejs/biome": "2.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
     "rimraf": "^6.0.1",
-    "rolldown": "^1.0.0-beta.32",
-    "typescript": "~5.9.2"
+    "rolldown": "^1.0.0-beta.32"
   }
 }

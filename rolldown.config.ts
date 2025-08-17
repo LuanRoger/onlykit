@@ -1,4 +1,5 @@
 import { defineConfig } from "rolldown";
+import { copyJson } from "./lib";
 
 export default defineConfig([
   // Server (Hono: https://github.com/honojs/hono)
@@ -32,7 +33,7 @@ export default defineConfig([
         exports: "named",
         sourcemap: true,
       },
-    ]
+    ],
   },
   // Client (KY: https://github.com/sindresorhus/ky)
   {
@@ -48,6 +49,27 @@ export default defineConfig([
         format: "cjs",
         exports: "named",
         sourcemap: true,
+      },
+    ],
+  },
+  // Dev (Vite: https://vitejs.dev, Biome: https://biomejs.org, TypeScript: https://www.typescriptlang.org)
+  {
+    input: "src/dev/index.ts",
+    external: ["vite", "node:path"],
+    plugins: [copyJson()],
+    output: [
+      {
+        file: "dist/dev/index.js",
+        format: "es",
+        sourcemap: true,
+        inlineDynamicImports: true,
+      },
+      {
+        file: "dist/dev/index.cjs",
+        format: "cjs",
+        exports: "named",
+        sourcemap: true,
+        inlineDynamicImports: true,
       },
     ],
   },
