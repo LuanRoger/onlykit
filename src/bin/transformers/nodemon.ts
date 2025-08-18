@@ -1,7 +1,7 @@
-import chalk from "chalk";
-
-const nodemonColor = chalk.green.bold;
-const resetStyle = chalk.reset;
+import { NodemonProcess } from "../constants";
+import { NodemonStyle, resetStyle } from "../styles";
+import { clearAnsiLessLine } from "../utils/formater";
+import { mountPrefix } from "../utils/log";
 
 function isNodemonLine(line: string): boolean {
   return line.startsWith("[nodemon]");
@@ -12,16 +12,13 @@ function removeNodemonPrefix(line: string): string {
 }
 
 function clearLine(line: string): string {
-  const stripAnsiRegex = /\x1B\[[0-?]*[ -/]*[@-~]/g;
-
   const withoutPrefix = removeNodemonPrefix(line);
-  const strippedLine = withoutPrefix.replace(stripAnsiRegex, "");
+  const strippedLine = clearAnsiLessLine(withoutPrefix);
 
   return strippedLine;
 }
 
-let lineCounter: number = 0;
-
+let lineCounter = 0;
 // biome-ignore lint/suspicious/noExplicitAny: This is a transformer function for nodemon output
 export function* transformNodemon(line: any) {
   if (lineCounter >= 3) {
@@ -29,12 +26,12 @@ export function* transformNodemon(line: any) {
       yield line;
     }
 
-    const runnerPrefix = nodemonColor("[runner] ");
+    const runnerPrefix = mountPrefix(NodemonProcess.TAG, NodemonStyle);
     const clearLineContent = clearLine(line);
     const lineContent = resetStyle(clearLineContent);
-
     const finalLine = `${runnerPrefix}${lineContent}`;
-    console.log(finalLine); // Log the transformed line to the console
+
+    console.log(finalLine);
     yield finalLine;
   } else {
     lineCounter++;
