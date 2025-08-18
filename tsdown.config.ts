@@ -17,7 +17,7 @@ export default defineConfig({
   },
   copy: [
     { from: "src/dev/biome/biome.json", to: "dist/dev/biome/biome.json" },
-    { from: "src/dev/ts-config/base.json", to: "dist/dev/ts-config/base.json" },
+    { from: "src/dev/tsconfig/base.json", to: "dist/dev/tsconfig/base.json" },
   ],
   dts: true,
   tsconfig: "tsconfig.build.json",

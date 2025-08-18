@@ -39,7 +39,7 @@
       "import": "./dist/dev/index.js",
       "require": "./dist/dev/index.cjs"
     },
-    "./dev/ts-config/base.json": "./dist/dev/ts-config/base.json",
+    "./dev/tsconfig/base.json": "./dist/dev/tsconfig/base.json",
     "./dev/biome/biome.json": "./dist/dev/biome/biome.json"
   },
   "files": [
@@ -47,17 +47,25 @@
   ],
   "peerDependencies": {
     "@biomejs/biome": "2.2.0",
-    "@hono/node-server": "^1.18.2",
+    "@hono/node-server": "^1.19.0",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
+    "chalk": "^5.6.0",
+    "commander": "^14.0.0",
+    "execa": "^9.6.0",
+    "figlet": "^1.8.2",
+    "fs-extra": "^11.3.1",
     "hono": "^4.9.2",
     "ky": "^1.8.2",
+    "ora": "^8.2.0",
     "tsdown": "^0.14.1",
-    "tslib": "^2.8.1",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
-    "@types/node": "^24.3.0"
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.3.0",
+    "nodemon": "^3.1.10"
   }
 }
