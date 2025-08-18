@@ -1,13 +1,12 @@
 {
-  "name": "only",
+  "name": "onlykit",
   "private": false,
   "version": "0.0.0",
   "type": "module",
   "sideEffects": false,
   "scripts": {
     "dev": "rolldown -c rolldown.config.ts -w",
-    "clean": "rimraf dist",
-    "build": "npm run clean && rolldown -c rolldown.config.ts && tsc -p tsconfig.build.json",
+    "build": "tsdown --config tsdown.config.ts",
     "lint": "biome lint",
     "lint:write": "biome lint --write",
     "format": "biome format",
@@ -47,20 +46,18 @@
     "dist"
   ],
   "peerDependencies": {
-    "@hono/node-server": "^1.18.2",
-    "hono": "^4.9.2",
-    "ky": "^1.8.2",
-    "typescript": "~5.9.2",
     "@biomejs/biome": "2.2.0",
-    "rollup": "^4.46.2",
+    "@hono/node-server": "^1.18.2",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
-    "tslib": "^2.8.1"
+    "hono": "^4.9.2",
+    "ky": "^1.8.2",
+    "tsdown": "^0.14.1",
+    "tslib": "^2.8.1",
+    "typescript": "~5.9.2"
   },
   "devDependencies": {
-    "@types/node": "^24.3.0",
-    "rimraf": "^6.0.1",
-    "rolldown": "^1.0.0-beta.32"
+    "@types/node": "^24.3.0"
   }
 }
