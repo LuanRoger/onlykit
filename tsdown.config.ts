@@ -9,7 +9,7 @@ function extractPeerDependencies() {
 
 export default defineConfig({
   entry: {
-    "cli/index": "src/cli/index.ts",
+    "bin/index": "src/bin/index.ts",
     "dev/index": "src/dev/index.ts",
     "server/index": "src/server/index.ts",
     "server/node/index": "src/server/node/index.ts",

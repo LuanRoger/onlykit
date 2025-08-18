@@ -16,7 +16,7 @@
     "gen:exports": "node ./scripts/generate-exports.mjs"
   },
   "bin": {
-    "only": "./dist/cli/index.js"
+    "onlykit": "./dist/bin/index.js"
   },
   "exports": {
     "./server": {
