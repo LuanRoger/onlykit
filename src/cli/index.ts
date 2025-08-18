@@ -1,4 +1,23 @@
 #!/usr/bin/env node
+
+import { Command } from "commander";
+import packageJson from "~/package.json";
+import { devCommand as dev } from "./commands/dev";
+
+async function main() {
+  const program = new Command()
+    .name("onlykit")
+    .description("The only thing you need...")
+    .version(packageJson.version, "-v, --version", "show the current version");
+
+  program.addCommand(dev);
+
+  program.parse();
+}
+
+main();
+
+/*
 import path from "node:path";
 import { existsSync } from "node:fs";
 import { spawn } from "node:child_process";
@@ -140,3 +159,4 @@ switch (cmd) {
     console.log(`only <dev|build|lint|format>`);
     process.exit(1);
 }
+ */
