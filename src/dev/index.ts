@@ -1,3 +1,3 @@
-export * as mod from "./rollup";
-export * from "./rollup";
-export { default as rollup } from "./rollup";
+export * as mod from "./tsdown";
+export * from "./tsdown";
+export { default as tsdown } from "./tsdown";
