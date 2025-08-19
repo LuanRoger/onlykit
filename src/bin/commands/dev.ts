@@ -2,8 +2,9 @@ import { $ } from "execa";
 import { Command } from "commander";
 import path from "node:path";
 import { normalizePath } from "../utils/path";
-import { transformNodemon } from "../transformers";
+import { transformNodemon, transformTsDown } from "../transformers";
 import { devSchema } from "../schemas";
+import { pathExists } from "fs-extra";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function devAction(inputPath: string, options: any) {
@@ -23,18 +24,20 @@ async function devAction(inputPath: string, options: any) {
   const cwd = path.resolve(parsedCwd);
   const inputPathResolved = path.resolve(cwd, parsedInputPath);
   const outputPathResolved = path.resolve(cwd, output);
+  const doesOutputPathExist = await pathExists(outputPathResolved);
 
-  const { failed } = await $({
-    preferLocal: true,
-    stdio: showBuilderLogs ? "inherit" : "ignore",
-  })`tsdown ${normalizePath(inputPathResolved)}`;
-  if (failed) {
-    process.exit(1);
+  if (!doesOutputPathExist) {
+    const { failed } = await $({
+      stdout: showBuilderLogs ? transformTsDown : "ignore",
+    })`tsdown ${normalizePath(inputPathResolved)}`;
+    if (failed) {
+      process.exit(1);
+    }
   }
 
   await Promise.all([
     $({
-      stdio: showBuilderLogs ? "inherit" : "ignore",
+      stdout: showBuilderLogs ? transformTsDown : "ignore",
     })`tsdown --watch ${normalizePath(inputPathResolved)}`,
     $({
       stdout: showRunnerLogs ? transformNodemon : "ignore",

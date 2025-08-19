@@ -1,4 +1,4 @@
-import { NodemonProcessMetadata } from "../processes/nodemon";
+import { NodemonProcessMetadata } from "../processes";
 import { resetStyle } from "../styles";
 import { clearAnsiLessLine } from "../utils/formater";
 import { mountProcessPrefix } from "../utils/log";
