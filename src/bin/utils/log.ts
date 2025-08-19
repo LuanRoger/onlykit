@@ -1,9 +1,13 @@
 import { LogSprites } from "../constants";
-import type { ChildStyle } from "../styles/child-style";
+import type { ProcessMetadata } from "../processes/process-metadata";
+import { processNameStyle } from "../styles";
 
-export function mountPrefix(tag: string, style: ChildStyle): string {
+export function mountProcessPrefix(process: ProcessMetadata): string {
+  const { name, tag, style } = process;
+
   const styledTag = style.tagColor(tag);
-  const formating = `[${styledTag}]${LogSprites.ARROW}`;
+  const styledName = processNameStyle(name);
+  const formating = `[${styledTag} (${styledName})] ${LogSprites.ARROW} `;
 
   return formating;
 }

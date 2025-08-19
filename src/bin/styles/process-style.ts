@@ -1,5 +1,5 @@
 import type { ChalkInstance } from "chalk";
 
-export interface ChildStyle {
+export interface ProcessStyle {
   readonly tagColor: ChalkInstance;
 }

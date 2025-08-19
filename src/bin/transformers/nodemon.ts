@@ -1,7 +1,7 @@
-import { NodemonProcess } from "../constants";
-import { NodemonStyle, resetStyle } from "../styles";
+import { NodemonProcessMetadata } from "../processes/nodemon";
+import { resetStyle } from "../styles";
 import { clearAnsiLessLine } from "../utils/formater";
-import { mountPrefix } from "../utils/log";
+import { mountProcessPrefix } from "../utils/log";
 
 function isNodemonLine(line: string): boolean {
   return line.startsWith("[nodemon]");
@@ -19,14 +19,14 @@ function clearLine(line: string): string {
 }
 
 let lineCounter = 0;
-// biome-ignore lint/suspicious/noExplicitAny: This is a transformer function for nodemon output
+// biome-ignore lint/suspicious/noExplicitAny: Any to match the transformer function signature
 export function* transformNodemon(line: any) {
   if (lineCounter >= 3) {
     if (!isNodemonLine(line)) {
       yield line;
     }
 
-    const runnerPrefix = mountPrefix(NodemonProcess.TAG, NodemonStyle);
+    const runnerPrefix = mountProcessPrefix(NodemonProcessMetadata.instance);
     const clearLineContent = clearLine(line);
     const lineContent = resetStyle(clearLineContent);
     const finalLine = `${runnerPrefix}${lineContent}`;
