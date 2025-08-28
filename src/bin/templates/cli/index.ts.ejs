@@ -1,0 +1,14 @@
+import { Command } from "commander";
+
+const program = new Command();
+
+program
+  .name("<%= projectName %>")
+  .description("CLI for <%= projectName %>")
+  .version("0.1.0");
+
+program.action(() => {
+  console.log("Hello from <%= projectName %>!");
+});
+
+program.parse();
