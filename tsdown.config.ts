@@ -14,6 +14,7 @@ export default defineConfig({
     "server/index": "src/server/index.ts",
     "server/node/index": "src/server/node/index.ts",
     "client/index": "src/client/index.ts",
+    "cli/index": "src/cli/index.ts",
   },
   copy: [
     { from: "src/dev/biome/biome.json", to: "dist/dev/biome/biome.json" },
