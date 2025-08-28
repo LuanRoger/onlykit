@@ -5,6 +5,7 @@ import packageJson from "~/package.json";
 import { devCommand as dev } from "./commands/dev";
 import { buildCommand as build } from "./commands/build";
 import { initCommand as init } from "./commands/init";
+import { checkCommand as check } from "./commands/check";
 
 async function main() {
   const program = new Command()
@@ -15,6 +16,7 @@ async function main() {
   program.addCommand(dev);
   program.addCommand(build);
   program.addCommand(init);
+  program.addCommand(check);
 
   program.parse();
 }

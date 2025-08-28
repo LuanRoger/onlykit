@@ -63,14 +63,14 @@ async function createPackageJson(
     version: "0.1.0",
     private: true,
     type: "module",
-    main: "dist/index.js",
+    main: "dist/index.mjs",
     license: "MIT",
     scripts,
     dependencies: deps,
   };
 
   if (template === "cli") {
-    pkg.bin = { [projectName]: "./dist/index.js" };
+    pkg.bin = { [projectName]: "./dist/index.mjs" };
   }
 
   await fs.writeFile(
