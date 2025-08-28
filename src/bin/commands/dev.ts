@@ -23,13 +23,17 @@ async function devAction(inputPath: string, options: any) {
 
   const cwd = path.resolve(parsedCwd);
   const inputPathResolved = path.resolve(cwd, parsedInputPath);
+
   const outputPathResolved = path.resolve(cwd, output);
+  const outputFilePath = path.join(outputPathResolved, "index.mjs");
   const doesOutputPathExist = await pathExists(outputPathResolved);
 
   if (!doesOutputPathExist) {
     const { failed } = await $({
       stdout: showBuilderLogs ? transformTsDown : "ignore",
-    })`tsdown ${normalizePath(inputPathResolved)} -d ${normalizePath(outputPathResolved)}`;
+    })`tsdown ${normalizePath(inputPathResolved)} -d ${normalizePath(
+      outputPathResolved
+    )}`;
     if (failed) {
       process.exit(1);
     }
@@ -38,10 +42,12 @@ async function devAction(inputPath: string, options: any) {
   await Promise.all([
     $({
       stdout: showBuilderLogs ? transformTsDown : "ignore",
-    })`tsdown --watch ${normalizePath(inputPathResolved)} -d ${normalizePath(outputPathResolved)}`,
+    })`tsdown --watch ${normalizePath(inputPathResolved)} -d ${normalizePath(
+      outputPathResolved
+    )}`,
     $({
       stdout: showRunnerLogs ? transformNodemon : "ignore",
-    })`nodemon ${normalizePath(outputPathResolved)}`,
+    })`nodemon ${normalizePath(outputFilePath)}`,
   ]);
 }
 
@@ -52,7 +58,8 @@ export const devCommand = new Command()
     "<inputPath>",
     "Path to the input file or directory. This will be watched by the builder."
   )
-  .option("--output <path>", "Set the output entrypoint", "./dist/index.mjs")
+  .option("--output <path>", "Set the output entrypoint", "./dist")
+  .option("--execute <filePath>", "File to execute after build", "index.mjs")
   .option("--show-builder-logs", "Show builder logs", false)
   .option("--show-runner-logs", "Show runner logs", true)
   .option(

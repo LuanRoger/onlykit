@@ -25,8 +25,6 @@ async function buildAction(inputPath: string, options: any) {
     })`tsdown ${normalizePath(inputPathResolved)} --d ${normalizePath(
       outputPathResolved
     )}`;
-
-    console.log(`Build completed: ${normalizePath(outputPathResolved)}`);
   } catch {
     process.exit(1);
   }
