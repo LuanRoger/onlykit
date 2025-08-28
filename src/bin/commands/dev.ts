@@ -29,7 +29,7 @@ async function devAction(inputPath: string, options: any) {
   if (!doesOutputPathExist) {
     const { failed } = await $({
       stdout: showBuilderLogs ? transformTsDown : "ignore",
-    })`tsdown ${normalizePath(inputPathResolved)}`;
+    })`tsdown ${normalizePath(inputPathResolved)} -d ${normalizePath(outputPathResolved)}`;
     if (failed) {
       process.exit(1);
     }
@@ -38,7 +38,7 @@ async function devAction(inputPath: string, options: any) {
   await Promise.all([
     $({
       stdout: showBuilderLogs ? transformTsDown : "ignore",
-    })`tsdown --watch ${normalizePath(inputPathResolved)}`,
+    })`tsdown --watch ${normalizePath(inputPathResolved)} -d ${normalizePath(outputPathResolved)}`,
     $({
       stdout: showRunnerLogs ? transformNodemon : "ignore",
     })`nodemon ${normalizePath(outputPathResolved)}`,

@@ -3,6 +3,7 @@
 import { Command } from "commander";
 import packageJson from "~/package.json";
 import { devCommand as dev } from "./commands/dev";
+import { buildCommand as build } from "./commands/build";
 
 async function main() {
   const program = new Command()
@@ -11,6 +12,7 @@ async function main() {
     .version(packageJson.version, "-v, --version", "show the current version");
 
   program.addCommand(dev);
+  program.addCommand(build);
 
   program.parse();
 }
