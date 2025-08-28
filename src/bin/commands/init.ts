@@ -5,7 +5,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import ejs from "ejs";
 import { fileURLToPath } from "node:url";
-import { TS_CONFIG } from "../constants";
+import { BIOME_CONFIG, TS_CONFIG } from "../constants";
 import { parseJson } from "../utils/json";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
@@ -29,6 +29,7 @@ async function initAction(projectName: string, options: any) {
     await Promise.all([
       await createPackageJson(parsedProjectName, projectRoot, template),
       await createTsConfig(projectRoot),
+      await createBiomeConfig(projectRoot),
     ]);
 
     spinner.text = "Creating template files...";
@@ -83,6 +84,14 @@ async function createTsConfig(projectRoot: string) {
   await fs.writeFile(
     path.join(projectRoot, "tsconfig.json"),
     parseJson(TS_CONFIG),
+    "utf8"
+  );
+}
+
+async function createBiomeConfig(projectRoot: string) {
+  await fs.writeFile(
+    path.join(projectRoot, "biome.json"),
+    parseJson(BIOME_CONFIG),
     "utf8"
   );
 }
