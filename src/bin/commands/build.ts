@@ -25,6 +25,8 @@ async function buildAction(inputPath: string, options: any) {
     })`tsdown ${normalizePath(inputPathResolved)} --d ${normalizePath(
       outputPathResolved
     )}`;
+
+    console.log(`Build completed: ${normalizePath(outputPathResolved)}`);
   } catch {
     process.exit(1);
   }
@@ -34,7 +36,7 @@ export const buildCommand = new Command()
   .command("build")
   .description("Build the project for production")
   .argument("<inputPath>", "Path to the input file or directory.")
-  .option("--output <path>", "Set the output entrypoint", "./dist/index.mjs")
+  .option("--output <path>", "Set the output entrypoint", "./dist")
   .option("--show-builder-logs", "Show builder logs", false)
   .option(
     "-c, --cwd <path>",

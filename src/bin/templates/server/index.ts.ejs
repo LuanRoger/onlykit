@@ -1,12 +1,14 @@
-import express from "express";
+import { Hono } from "onlykit/server";
+import { serve } from "onlykit/server/node";
 
-const app = express();
-const port = Number(process.env.PORT) || 3000;
+const app = new Hono();
 
-app.get("/", (_req, res) => {
-  res.send("Hello from <%= projectName %>!");
+app.get("/", (c) => {
+  return c.text("Hello World");
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+export function main() {
+  serve(app, (info) => {
+    console.log(`Server is running on http://localhost:${info.port}`);
+  });
+}
