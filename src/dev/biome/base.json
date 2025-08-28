@@ -1,8 +1,9 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
-  "root": false,
+  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+  "root": true,
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": ["src/**/*"]
   },
   "formatter": {
     "enabled": true,

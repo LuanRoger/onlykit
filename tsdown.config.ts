@@ -17,10 +17,16 @@ export default defineConfig({
     "cli/index": "src/cli/index.ts",
   },
   copy: [
-    { from: "src/dev/biome/biome.json", to: "dist/dev/biome/biome.json" },
+    { from: "src/dev/biome/base.json", to: "dist/dev/biome/base.json" },
     { from: "src/dev/tsconfig/base.json", to: "dist/dev/tsconfig/base.json" },
-    { from: "src/bin/templates/cli/index.ts.ejs", to: "dist/bin/templates/cli/index.ts.ejs" },
-    { from: "src/bin/templates/server/index.ts.ejs", to: "dist/bin/templates/server/index.ts.ejs" },
+    {
+      from: "src/bin/templates/cli/index.ts.ejs",
+      to: "dist/bin/templates/cli/index.ts.ejs",
+    },
+    {
+      from: "src/bin/templates/server/index.ts.ejs",
+      to: "dist/bin/templates/server/index.ts.ejs",
+    },
   ],
   dts: true,
   tsconfig: "tsconfig.build.json",

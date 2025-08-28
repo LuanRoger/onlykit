@@ -44,8 +44,8 @@
       "import": "./dist/dev/index.js",
       "require": "./dist/dev/index.cjs"
     },
-    "./dev/tsconfig/base.json": "./dist/dev/tsconfig/base.json",
-    "./dev/biome/biome.json": "./dist/dev/biome/biome.json"
+    "./dev/tsconfig": "./dist/dev/tsconfig/base.json",
+    "./dev/biome": "./dist/dev/biome/base.json"
   },
   "files": [
     "dist"
