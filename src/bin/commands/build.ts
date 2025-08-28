@@ -3,7 +3,7 @@ import { transformTsDown } from "../transformers";
 import path from "node:path";
 import { normalizePath } from "../utils/path";
 import { $ } from "execa";
-import { buildSchema } from "../schemas";
+import { buildSchema } from "./schemas";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function buildAction(inputPath: string, options: any) {

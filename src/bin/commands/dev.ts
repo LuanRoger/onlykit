@@ -3,7 +3,7 @@ import { Command } from "commander";
 import path from "node:path";
 import { normalizePath } from "../utils/path";
 import { transformNodemon, transformTsDown } from "../transformers";
-import { devSchema } from "../schemas";
+import { devSchema } from "./schemas";
 import { pathExists } from "fs-extra";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
