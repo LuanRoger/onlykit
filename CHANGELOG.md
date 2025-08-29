@@ -1,3 +1,22 @@
+## [0.0.2] - 2025-08-29
+
+### 🐛 Bug Fixes
+
+- Show chalk child process colors
+- *(bin)* Nodemon ignore and direct exec node
+
+### 🎨 Styling
+
+- *(bin)* Format and call main in templates
+- Run Biome check
+
+### ⚙️ Miscellaneous Tasks
+
+- Add Github Packages registry
+- Add CHANGELOG
+- Add MIT License to the project
+- Add release:all script
+- Add LICENSE and CHANGELOG in package
 ## [0.0.1] - 2025-08-29
 
 ### 🚀 Features
