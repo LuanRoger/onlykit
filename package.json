@@ -86,7 +86,9 @@
     "./dev/biome": "./dist/dev/biome/base.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "peerDependencies": {
     "@biomejs/biome": "2.2.2",
