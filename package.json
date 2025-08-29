@@ -50,6 +50,7 @@
     "check:write": "biome check --write",
     "changelog:gen": "git-cliff --config ./scripts/git-cliff.toml --output CHANGELOG.md",
     "release": "np --no-tests",
+    "release:all": "npm run build && npm run release",
     "gen:exports": "node ./scripts/generate-exports.mjs"
   },
   "bin": {
