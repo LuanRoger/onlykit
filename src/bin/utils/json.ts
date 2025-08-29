@@ -1,3 +1,3 @@
-export function parseJson(input: any): any {
-  return JSON.stringify(input, null, 2) + "\n";
+export function parseJson(input: unknown): string {
+  return `${JSON.stringify(input, null, 2)}\n`;
 }

@@ -7,5 +7,7 @@ export function isDirectory(p: string): boolean {
 }
 
 export function getFileDirectory(filePath: string): string {
-  return filePath.endsWith("/") ? filePath : filePath.substring(0, filePath.lastIndexOf("/"));
+  return filePath.endsWith("/")
+    ? filePath
+    : filePath.substring(0, filePath.lastIndexOf("/"));
 }

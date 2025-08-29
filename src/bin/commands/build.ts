@@ -1,8 +1,8 @@
-import { Command } from "commander";
-import { transformTsDown } from "../transformers";
 import path from "node:path";
-import { normalizePath } from "../utils/path";
+import { Command } from "commander";
 import { $ } from "execa";
+import { transformTsDown } from "../transformers";
+import { normalizePath } from "../utils/path";
 import { buildSchema } from "./schemas";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
@@ -23,7 +23,7 @@ async function buildAction(inputPath: string, options: any) {
       stdout: transformTsDown,
       stderr: "inherit",
     })`tsdown ${normalizePath(inputPathResolved)} --d ${normalizePath(
-      outputPathResolved
+      outputPathResolved,
     )}`;
   } catch {
     process.exit(1);
@@ -39,6 +39,6 @@ export const buildCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd()
+    process.cwd(),
   )
   .action(buildAction);

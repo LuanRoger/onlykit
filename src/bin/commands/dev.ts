@@ -1,11 +1,11 @@
-import { $ } from "execa";
-import { Command } from "commander";
-import path from "node:path";
 import fs from "node:fs";
-import { normalizePath } from "../utils/path";
-import { transformNodemon, transformTsDown } from "../transformers";
-import { devSchema } from "./schemas";
+import path from "node:path";
+import { Command } from "commander";
+import { $ } from "execa";
 import { pathExists } from "fs-extra";
+import { transformNodemon, transformTsDown } from "../transformers";
+import { normalizePath } from "../utils/path";
+import { devSchema } from "./schemas";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function devAction(inputPath: string, options: any) {
@@ -44,7 +44,7 @@ async function devAction(inputPath: string, options: any) {
     const { failed } = await $({
       stdout: showBuilderLogs ? transformTsDown : "ignore",
     })`tsdown ${normalizePath(entryFileName)} -d ${normalizePath(
-      outputPathResolved
+      outputPathResolved,
     )}`;
     if (failed) {
       process.exit(1);
@@ -55,7 +55,7 @@ async function devAction(inputPath: string, options: any) {
     $({
       stdout: showBuilderLogs ? transformTsDown : "ignore",
     })`tsdown --watch ${normalizePath(inputPathResolved)} -d ${normalizePath(
-      outputPathResolved
+      outputPathResolved,
     )}`,
     $({
       stdout: showRunnerLogs ? transformNodemon : "ignore",
@@ -64,7 +64,7 @@ async function devAction(inputPath: string, options: any) {
         FORCE_COLOR: "1",
       },
     })`nodemon --exec "node ${normalizePath(outputFilePath)}" --watch ${normalizePath(
-      outputPathResolved
+      outputPathResolved,
     )} -e ts,tsx,js,mjs --ignore node_modules`,
   ]);
 }
@@ -74,7 +74,7 @@ export const devCommand = new Command()
   .description("Start the development server")
   .argument(
     "<inputPath>",
-    "Path to the input file or directory. This will be watched by the builder."
+    "Path to the input file or directory. This will be watched by the builder.",
   )
   .option("--output <path>", "Set the output directory", "./dist")
   .option("--execute <filePath>", "File to execute after build", "index.mjs")
@@ -83,6 +83,6 @@ export const devCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd()
+    process.cwd(),
   )
   .action(devAction);

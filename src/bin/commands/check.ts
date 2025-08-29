@@ -1,8 +1,8 @@
 import { Command } from "commander";
-import { checkSchema } from "./schemas/check";
 import { $ } from "execa";
-import { normalizePath } from "../utils/path";
 import { transformBiome } from "../transformers";
+import { normalizePath } from "../utils/path";
+import { checkSchema } from "./schemas/check";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function checkAction(options: any) {
