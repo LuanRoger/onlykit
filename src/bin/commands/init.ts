@@ -7,6 +7,7 @@ import ejs from "ejs";
 import { fileURLToPath } from "node:url";
 import { BIOME_CONFIG, TS_CONFIG } from "../constants";
 import { parseJson } from "../utils/json";
+import { pathExists } from "fs-extra";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function initAction(projectName: string, options: any) {
@@ -27,7 +28,7 @@ async function initAction(projectName: string, options: any) {
 
     spinner.text = "Creating package.json and tsconfig.json...";
     await Promise.all([
-      //await createPackageJson(parsedProjectName, projectRoot, template),
+      await updatePackageJson(projectRoot),
       await createTsConfig(projectRoot),
       await createBiomeConfig(projectRoot),
     ]);
@@ -43,39 +44,34 @@ async function initAction(projectName: string, options: any) {
   }
 }
 
-async function createPackageJson(
-  projectName: string,
+async function updatePackageJson(
   projectRoot: string,
-  template: string
 ) {
-  const scripts: Record<string, string> = {
-    start: "node dist/index.js",
-    dev: "onlykit dev src/index.ts",
-    build: "onlykit build src/index.ts",
-  };
+  const packageJsonPath = path.join(projectRoot, "package.json");
+  const doesPackageJsonExist = await pathExists(packageJsonPath);
 
-  const deps = {
-    onlykit: "file:../onlykit",
-  };
-
-  const pkg: Record<string, unknown> = {
-    name: projectName,
-    version: "0.1.0",
-    private: true,
-    type: "module",
-    main: "dist/index.mjs",
-    license: "MIT",
-    scripts,
-    dependencies: deps,
-  };
-
-  if (template === "cli") {
-    pkg.bin = { [projectName]: "./dist/index.mjs" };
+  if (!doesPackageJsonExist) {
+    console.warn("package.json does not exist, creating a new one.");
   }
+
+  const existingPackageJsonContent = await fs.readFile(packageJsonPath, "utf8");
+  const existingPackageJson = JSON.parse(existingPackageJsonContent);
+
+  const newScripts = {
+    start: "node dist/index.mjs",
+    dev: "onlykit dev ./src",
+    build: "onlykit build ./src/index.ts",
+    check: "onlykit check",
+    "check:write": "onlykit check --write",
+  };
+  existingPackageJson.scripts = {
+    ...existingPackageJson.scripts,
+    ...newScripts,
+  };
 
   await fs.writeFile(
     path.join(projectRoot, "package.json"),
-    parseJson(pkg),
+    parseJson(existingPackageJson),
     "utf8"
   );
 }
