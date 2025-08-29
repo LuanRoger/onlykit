@@ -1,6 +1,7 @@
 import { $ } from "execa";
 import { Command } from "commander";
 import path from "node:path";
+import fs from "node:fs";
 import { normalizePath } from "../utils/path";
 import { transformNodemon, transformTsDown } from "../transformers";
 import { devSchema } from "./schemas";
@@ -17,6 +18,7 @@ async function devAction(inputPath: string, options: any) {
     cwd: parsedCwd,
     inputPath: parsedInputPath,
     output,
+    execute,
     showBuilderLogs,
     showRunnerLogs,
   } = result;
@@ -25,13 +27,23 @@ async function devAction(inputPath: string, options: any) {
   const inputPathResolved = path.resolve(cwd, parsedInputPath);
 
   const outputPathResolved = path.resolve(cwd, output);
-  const outputFilePath = path.join(outputPathResolved, "index.mjs");
-  const doesOutputPathExist = await pathExists(outputPathResolved);
+  const outputFilePath = path.join(outputPathResolved, execute);
+  const doesOutputPathExist = await pathExists(outputFilePath);
 
   if (!doesOutputPathExist) {
+    const inputIsPathFile = fs.lstatSync(inputPathResolved).isFile();
+    const entryFileName = inputIsPathFile
+      ? inputPathResolved
+      : path.join(inputPathResolved, "index.ts");
+    const doesEntryFileExists = await pathExists(entryFileName);
+    if (!doesEntryFileExists) {
+      console.error(`Entry file ${entryFileName} does not exist.`);
+      process.exit(1);
+    }
+
     const { failed } = await $({
       stdout: showBuilderLogs ? transformTsDown : "ignore",
-    })`tsdown ${normalizePath(inputPathResolved)} -d ${normalizePath(
+    })`tsdown ${normalizePath(entryFileName)} -d ${normalizePath(
       outputPathResolved
     )}`;
     if (failed) {
@@ -47,7 +59,7 @@ async function devAction(inputPath: string, options: any) {
     )}`,
     $({
       stdout: showRunnerLogs ? transformNodemon : "ignore",
-    })`nodemon ${normalizePath(outputFilePath)}`,
+    })`nodemon ${normalizePath(outputFilePath)} -e ts,tsx,js,mjs`,
   ]);
 }
 
@@ -58,7 +70,7 @@ export const devCommand = new Command()
     "<inputPath>",
     "Path to the input file or directory. This will be watched by the builder."
   )
-  .option("--output <path>", "Set the output entrypoint", "./dist")
+  .option("--output <path>", "Set the output directory", "./dist")
   .option("--execute <filePath>", "File to execute after build", "index.mjs")
   .option("--show-builder-logs", "Show builder logs", false)
   .option("--show-runner-logs", "Show runner logs", true)

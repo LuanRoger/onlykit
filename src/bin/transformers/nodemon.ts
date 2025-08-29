@@ -1,5 +1,4 @@
 import { NodemonProcessMetadata } from "../processes";
-import { resetStyle } from "../styles";
 import { clearAnsiLessLine } from "../utils/formater";
 import { mountProcessPrefix } from "../utils/log";
 
@@ -27,9 +26,8 @@ export function* transformNodemon(line: any) {
     }
 
     const runnerPrefix = mountProcessPrefix(NodemonProcessMetadata.instance);
-    const clearLineContent = clearLine(line);
-    const lineContent = resetStyle(clearLineContent);
-    const finalLine = `${runnerPrefix}${lineContent}`;
+    const clearedLine = clearLine(line);
+    const finalLine = `${runnerPrefix}${clearedLine}`;
 
     console.log(finalLine);
     yield finalLine;
