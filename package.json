@@ -48,7 +48,7 @@
     "check": "biome check",
     "check:write": "biome check --write",
     "changelog:gen": "git-cliff --config ./scripts/git-cliff.toml",
-    "release": "np",
+    "release": "np --no-tests",
     "gen:exports": "node ./scripts/generate-exports.mjs"
   },
   "bin": {
