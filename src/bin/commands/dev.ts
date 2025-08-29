@@ -64,7 +64,7 @@ async function devAction(inputPath: string, options: any) {
         FORCE_COLOR: "1",
       },
     })`nodemon --exec "node ${normalizePath(outputFilePath)}" --watch ${normalizePath(
-      outputPathResolved,
+      inputPathResolved,
     )} -e ts,tsx,js,mjs --ignore node_modules`,
   ]);
 }
