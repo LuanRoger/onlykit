@@ -1,5 +1,4 @@
 import { NodemonProcessMetadata } from "../processes";
-import { clearAnsiLessLine } from "../utils/formater";
 import { mountProcessPrefix } from "../utils/log";
 
 function isNodemonLine(line: string): boolean {
@@ -12,9 +11,8 @@ function removeNodemonPrefix(line: string): string {
 
 function clearLine(line: string): string {
   const withoutPrefix = removeNodemonPrefix(line);
-  const strippedLine = clearAnsiLessLine(withoutPrefix);
 
-  return strippedLine;
+  return withoutPrefix;
 }
 
 let lineCounter = 0;

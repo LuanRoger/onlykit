@@ -59,6 +59,10 @@ async function devAction(inputPath: string, options: any) {
     )}`,
     $({
       stdout: showRunnerLogs ? transformNodemon : "ignore",
+      env: {
+        ...process.env,
+        FORCE_COLOR: "1",
+      },
     })`nodemon ${normalizePath(outputFilePath)} -e ts,tsx,js,mjs`,
   ]);
 }
