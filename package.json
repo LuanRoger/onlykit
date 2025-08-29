@@ -5,6 +5,39 @@
   "version": "0.0.0",
   "type": "module",
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LuanRoger/onlykit.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "author": "Luan Roger <luan.roger.2003@gmail.com> (https://github.com/LuanRoger)",
+  "license": "MIT",
+  "homepage": "https://github.com/LuanRoger/onlykit",
+  "keywords": [
+    "web",
+    "server",
+    "client",
+    "cli",
+    "tool",
+    "kit",
+    "sdk",
+    "development",
+    "hono",
+    "deamon",
+    "rolldown",
+    "tsdown",
+    "biome",
+    "typescript",
+    "tsconfig",
+    "types",
+    "utils",
+    "starter",
+    "template",
+    "boilerplate"
+  ],
   "scripts": {
     "dev": "rolldown -c rolldown.config.ts -w",
     "build": "tsdown --config tsdown.config.ts",
@@ -81,5 +114,8 @@
     "ejs": "^3.1.10",
     "git-cliff": "^2.10.0",
     "np": "^10.2.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }
