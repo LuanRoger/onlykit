@@ -11,6 +11,7 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
+    "@LuanRoger:registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "author": "Luan Roger <luan.roger.2003@gmail.com> (https://github.com/LuanRoger)",
@@ -47,7 +48,7 @@
     "format:write": "biome format --write",
     "check": "biome check",
     "check:write": "biome check --write",
-    "changelog:gen": "git-cliff --config ./scripts/git-cliff.toml",
+    "changelog:gen": "git-cliff --config ./scripts/git-cliff.toml --output CHANGELOG.md",
     "release": "np --no-tests",
     "gen:exports": "node ./scripts/generate-exports.mjs"
   },
