@@ -1,5 +1,6 @@
 {
   "name": "onlykit",
+  "description": "Because it's the only dependency you'll need.",
   "private": false,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +14,8 @@
     "format:write": "biome format --write",
     "check": "biome check",
     "check:write": "biome check --write",
+    "changelog:gen": "git-cliff --config ./scripts/git-cliff.toml",
+    "release": "np",
     "gen:exports": "node ./scripts/generate-exports.mjs"
   },
   "bin": {
@@ -56,8 +59,8 @@
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
-    "@types/fs-extra": "^11.0.4",
     "@types/figlet": "^1.7.0",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^24.3.0",
     "chalk": "^5.6.0",
     "commander": "^14.0.0",
@@ -75,6 +78,8 @@
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
-    "ejs": "^3.1.10"
+    "ejs": "^3.1.10",
+    "git-cliff": "^2.10.0",
+    "np": "^10.2.0"
   }
 }
