@@ -27,7 +27,7 @@ async function initAction(projectName: string, options: any) {
 
     spinner.text = "Creating package.json and tsconfig.json...";
     await Promise.all([
-      await createPackageJson(parsedProjectName, projectRoot, template),
+      //await createPackageJson(parsedProjectName, projectRoot, template),
       await createTsConfig(projectRoot),
       await createBiomeConfig(projectRoot),
     ]);

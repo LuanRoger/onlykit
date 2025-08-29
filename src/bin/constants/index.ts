@@ -7,7 +7,7 @@ export const TS_CONFIG = {
 
 export const BIOME_CONFIG = {
   $schema: "https://biomejs.dev/schemas/2.2.2/schema.json",
-  extends: "onlykit/dev/biome",
+  extends: ["onlykit/dev/biome"],
 };
 
 export const LogSprites = {
