@@ -2,7 +2,7 @@
   "name": "onlykit",
   "description": "Because it's the only dependency you'll need.",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "sideEffects": false,
   "repository": {
