@@ -74,7 +74,7 @@ export const devCommand = new Command()
   .description("Start the development server")
   .argument(
     "<inputPath>",
-    "Path to the input file or directory. This will be watched by the builder.",
+    "Path to the input file or directory. This will be watched by the daemon.",
   )
   .option("--output <path>", "Set the output directory", "./dist")
   .option("--execute <filePath>", "File to execute after build", "index.mjs")
