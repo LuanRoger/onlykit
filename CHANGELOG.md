@@ -1,3 +1,38 @@
+## [0.1.0] - 2025-08-30
+
+### 🚀 Features
+
+- *(dev)* Add the exclude in the base tsconfig
+- Create standalone environment manager
+- Create the run command
+- *(bin)* Create tsconfig file for standalone mode
+- *(bin)* Create Node executor
+- *(server)* Export Hono jsx, quick and tiny
+- *(package)* Add main entrypoint
+
+### 🐛 Bug Fixes
+
+- *(bin)* Deamon watch path
+- *(bin)* Remove colors from nodemon output
+- *(bin)* Add proper args to Biome check
+- *(package)* Update script path
+
+### 🚜 Refactor
+
+- *(bin)* Extract file create and update into module
+- *(bin)* Create command executors
+
+### 🎨 Styling
+
+- Run Biome check
+
+### ⚙️ Miscellaneous Tasks
+
+- Update CHANGELOG
+- *(bin)* Create generic transformer
+- *(bin)* Use new executors in build, check and dev commands
+- *(bin)* Remove watch flag from run command
+- *(build)* Build new Hono exports
 ## [0.0.2] - 2025-08-29
 
 ### 🐛 Bug Fixes
