@@ -7,7 +7,6 @@ import { createTsConfig } from "../files";
 import { addExitHook } from "../utils/process";
 import {
   NodeExecuteExecutor,
-  NodemonExecuteExecutor,
   TsDownBuildExecutor,
 } from "../processes/executors";
 
@@ -18,12 +17,7 @@ async function runAction(entryPoint: string, options: any) {
     ...options,
   });
 
-  const {
-    entryPoint: parsedEntryPoint,
-    cwd: parsedCwd,
-    watch,
-    tsconfig,
-  } = result;
+  const { entryPoint: parsedEntryPoint, cwd: parsedCwd, tsconfig } = result;
 
   const cwd = path.resolve(parsedCwd);
   const entryPointResolved = path.resolve(cwd, parsedEntryPoint);
@@ -54,18 +48,10 @@ async function runAction(entryPoint: string, options: any) {
   spinner.clear();
 
   try {
-    if (watch) {
-      const nodemonExecutor = new NodemonExecuteExecutor({
-        inputPath: standaloneEnv.standaloneOutputEntryPoint,
-        watchPath: standaloneEnv.standaloneOutputPath,
-      });
-      await nodemonExecutor.execute();
-    } else {
-      const nodeExecutor = new NodeExecuteExecutor({
-        inputPath: standaloneEnv.standaloneOutputEntryPoint,
-      });
-      await nodeExecutor.execute();
-    }
+    const nodeExecutor = new NodeExecuteExecutor({
+      inputPath: standaloneEnv.standaloneOutputEntryPoint,
+    });
+    await nodeExecutor.execute();
   } finally {
     await cleanup();
   }
@@ -74,7 +60,6 @@ async function runAction(entryPoint: string, options: any) {
 export const runCommand = new Command("run")
   .description("Run your project in standalone mode")
   .argument("<entryPoint>", "Path to the entry point file")
-  .option("--watch", "Watch for file changes and re-run", false)
   .option("--no-tsconfig", "Do not generate a tsconfig.json file", true)
   .option("--cwd <path>", "Set the current working directory", process.cwd())
   .action(runAction);
