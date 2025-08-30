@@ -1,9 +1,7 @@
 import path from "node:path";
 import { Command } from "commander";
-import { $ } from "execa";
-import { transformTsDown } from "../transformers";
-import { normalizePath } from "../utils/path";
 import { buildSchema } from "./schemas";
+import { TsDownBuildExecutor } from "../processes/executors";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function buildAction(inputPath: string, options: any) {
@@ -17,17 +15,17 @@ async function buildAction(inputPath: string, options: any) {
   const resolvedCwd = path.resolve(cwd);
   const inputPathResolved = path.resolve(resolvedCwd, parsedInputPath);
   const outputPathResolved = path.resolve(resolvedCwd, output);
+  const tsDownExecutor = new TsDownBuildExecutor(
+    {
+      inputPath: inputPathResolved,
+      outputPath: outputPathResolved,
+      watch: options.watch,
+    },
+    false,
+    true
+  );
 
-  try {
-    await $({
-      stdout: transformTsDown,
-      stderr: "inherit",
-    })`tsdown ${normalizePath(inputPathResolved)} --d ${normalizePath(
-      outputPathResolved,
-    )}`;
-  } catch {
-    process.exit(1);
-  }
+  await tsDownExecutor.execute();
 }
 
 export const buildCommand = new Command()
@@ -39,6 +37,6 @@ export const buildCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd(),
+    process.cwd()
   )
   .action(buildAction);

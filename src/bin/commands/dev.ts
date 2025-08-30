@@ -1,11 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Command } from "commander";
-import { $ } from "execa";
 import { pathExists } from "fs-extra";
-import { transformNodemon, transformTsDown } from "../transformers";
-import { normalizePath } from "../utils/path";
 import { devSchema } from "./schemas";
+import {
+  NodemonExecuteExecutor,
+  TsDownBuildExecutor,
+} from "../processes/executors";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function devAction(inputPath: string, options: any) {
@@ -41,32 +42,35 @@ async function devAction(inputPath: string, options: any) {
       process.exit(1);
     }
 
-    const { failed } = await $({
-      stdout: showBuilderLogs ? transformTsDown : "ignore",
-    })`tsdown ${normalizePath(entryFileName)} -d ${normalizePath(
-      outputPathResolved,
-    )}`;
-    if (failed) {
-      process.exit(1);
-    }
+    const initialBuildExecutor = new TsDownBuildExecutor(
+      {
+        inputPath: entryFileName,
+        outputPath: outputPathResolved,
+      },
+      !showBuilderLogs,
+      true
+    );
+    await initialBuildExecutor.execute();
   }
 
-  await Promise.all([
-    $({
-      stdout: showBuilderLogs ? transformTsDown : "ignore",
-    })`tsdown --watch ${normalizePath(inputPathResolved)} -d ${normalizePath(
-      outputPathResolved,
-    )}`,
-    $({
-      stdout: showRunnerLogs ? transformNodemon : "ignore",
-      env: {
-        ...process.env,
-        FORCE_COLOR: "1",
-      },
-    })`nodemon --exec "node ${normalizePath(outputFilePath)}" --watch ${normalizePath(
-      inputPathResolved,
-    )} -e ts,tsx,js,mjs --ignore node_modules`,
-  ]);
+  const tsDownExecutor = new TsDownBuildExecutor(
+    {
+      inputPath: inputPathResolved,
+      outputPath: outputPathResolved,
+      watch: true,
+    },
+    !showBuilderLogs,
+    false
+  );
+  const nodemonExecutor = new NodemonExecuteExecutor(
+    {
+      inputPath: outputFilePath,
+      watchPath: outputPathResolved,
+    },
+    !showRunnerLogs,
+    false
+  );
+  await Promise.all([tsDownExecutor.execute(), nodemonExecutor.execute()]);
 }
 
 export const devCommand = new Command()
@@ -74,7 +78,7 @@ export const devCommand = new Command()
   .description("Start the development server")
   .argument(
     "<inputPath>",
-    "Path to the input file or directory. This will be watched by the daemon.",
+    "Path to the input file or directory. This will be watched by the daemon."
   )
   .option("--output <path>", "Set the output directory", "./dist")
   .option("--execute <filePath>", "File to execute after build", "index.mjs")
@@ -83,6 +87,6 @@ export const devCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd(),
+    process.cwd()
   )
   .action(devAction);

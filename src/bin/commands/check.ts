@@ -1,8 +1,6 @@
 import { Command } from "commander";
-import { $ } from "execa";
-import { transformBiome } from "../transformers";
-import { normalizePath } from "../utils/path";
 import { checkSchema } from "./schemas/check";
+import { BiomeCheckExecutor } from "../processes/executors";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function checkAction(options: any) {
@@ -11,15 +9,16 @@ async function checkAction(options: any) {
   });
 
   const { cwd, write } = result;
+  const biomeExecutor = new BiomeCheckExecutor(
+    {
+      cwd,
+      write,
+    },
+    false,
+    true
+  );
 
-  try {
-    await $({
-      stdout: transformBiome,
-      stderr: "inherit",
-    })`biome check ${write ? "--write" : ""} ${normalizePath(cwd)}`;
-  } catch {
-    process.exit(1);
-  }
+  await biomeExecutor.execute();
 }
 
 export const checkCommand = new Command("check")
