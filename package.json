@@ -51,7 +51,7 @@
     "changelog:gen": "git-cliff --config ./scripts/git-cliff.toml --output CHANGELOG.md",
     "release": "np --no-tests",
     "release:all": "npm run build && npm run release",
-    "gen:exports": "node ./scripts/generate-exports.mjs"
+    "gen:exports": "node ./lib/scripts/generate-exports.mjs"
   },
   "bin": {
     "onlykit": "./dist/bin/index.js"
@@ -66,6 +66,21 @@
       "types": "./dist/server/node/index.d.ts",
       "import": "./dist/server/node/index.js",
       "require": "./dist/server/node/index.cjs"
+    },
+    "./server/jsx": {
+      "types": "./dist/server/jsx/index.d.ts",
+      "import": "./dist/server/jsx/index.js",
+      "require": "./dist/server/jsx/index.cjs"
+    },
+    "./server/tiny": {
+      "types": "./dist/server/tiny/index.d.ts",
+      "import": "./dist/server/tiny/index.js",
+      "require": "./dist/server/tiny/index.cjs"
+    },
+    "./server/quick": {
+      "types": "./dist/server/quick/index.d.ts",
+      "import": "./dist/server/quick/index.js",
+      "require": "./dist/server/quick/index.cjs"
     },
     "./client": {
       "types": "./dist/client/index.d.ts",
