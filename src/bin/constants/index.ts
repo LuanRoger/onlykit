@@ -17,3 +17,5 @@ export const LogSprites = {
 export const REGEX = {
   ANSI: /\x1B\[[0-?]*[ -/]*[@-~]/g,
 } as const;
+
+export const STANDALONE_ENVIRONMENT_FOLDER = ".onlykit";

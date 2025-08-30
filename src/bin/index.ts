@@ -6,6 +6,7 @@ import { buildCommand as build } from "./commands/build";
 import { checkCommand as check } from "./commands/check";
 import { devCommand as dev } from "./commands/dev";
 import { initCommand as init } from "./commands/init";
+import { runCommand as run } from "./commands/run";
 
 async function main() {
   const program = new Command()
@@ -17,6 +18,7 @@ async function main() {
   program.addCommand(build);
   program.addCommand(init);
   program.addCommand(check);
+  program.addCommand(run);
 
   program.parse();
 }
