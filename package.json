@@ -67,6 +67,21 @@
       "import": "./dist/server/node/index.js",
       "require": "./dist/server/node/index.cjs"
     },
+    "./server/jsx": {
+      "types": "./dist/server/jsx/index.d.ts",
+      "import": "./dist/server/jsx/index.js",
+      "require": "./dist/server/jsx/index.cjs"
+    },
+    "./server/tiny": {
+      "types": "./dist/server/tiny/index.d.ts",
+      "import": "./dist/server/tiny/index.js",
+      "require": "./dist/server/tiny/index.cjs"
+    },
+    "./server/quick": {
+      "types": "./dist/server/quick/index.d.ts",
+      "import": "./dist/server/quick/index.js",
+      "require": "./dist/server/quick/index.cjs"
+    },
     "./client": {
       "types": "./dist/client/index.d.ts",
       "import": "./dist/client/index.js",
