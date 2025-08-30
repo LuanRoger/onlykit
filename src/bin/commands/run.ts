@@ -1,14 +1,14 @@
-import { Command } from "commander";
-import { runSchema } from "./schemas";
 import path from "node:path";
-import { StandaloneEnvironment } from "../standalone";
+import { Command } from "commander";
 import ora from "ora";
 import { createTsConfig } from "../files";
-import { addExitHook } from "../utils/process";
 import {
   NodeExecuteExecutor,
   TsDownBuildExecutor,
 } from "../processes/executors";
+import { StandaloneEnvironment } from "../standalone";
+import { addExitHook } from "../utils/process";
+import { runSchema } from "./schemas";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function runAction(entryPoint: string, options: any) {
@@ -41,7 +41,7 @@ async function runAction(entryPoint: string, options: any) {
       outputPath: standaloneEnv.standaloneOutputPath,
     },
     true,
-    false
+    false,
   );
   await tsDownExecutor.execute();
   spinner.stop();

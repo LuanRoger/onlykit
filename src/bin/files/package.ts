@@ -1,6 +1,6 @@
-import { pathExists } from "fs-extra";
-import path from "node:path";
 import fs from "node:fs/promises";
+import path from "node:path";
+import { pathExists } from "fs-extra";
 import { parseJson } from "../utils/json";
 
 export async function updatePackageJson(projectRoot: string) {
@@ -29,6 +29,6 @@ export async function updatePackageJson(projectRoot: string) {
   await fs.writeFile(
     path.join(projectRoot, "package.json"),
     parseJson(existingPackageJson),
-    "utf8"
+    "utf8",
   );
 }

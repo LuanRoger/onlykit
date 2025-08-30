@@ -1,6 +1,6 @@
 export abstract class ExecutorCommand<T> {
   protected abstract readonly outTransformer: (
-    line: unknown
+    line: unknown,
   ) => Generator<string, void, unknown>;
 
   protected readonly ignoreOut: boolean;
@@ -10,7 +10,7 @@ export abstract class ExecutorCommand<T> {
   constructor(
     options: T,
     ignoreOut: boolean = false,
-    exitOnError: boolean = false
+    exitOnError: boolean = false,
   ) {
     this.options = options;
     this.ignoreOut = ignoreOut;

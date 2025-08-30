@@ -1,12 +1,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import ejs from "ejs";
 import { fileURLToPath } from "node:url";
+import ejs from "ejs";
 
 export async function createTemplateFile(
   projectName: string,
   srcDir: string,
-  template: string
+  template: string,
 ) {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
@@ -14,7 +14,7 @@ export async function createTemplateFile(
     __dirname,
     "./templates",
     template,
-    "index.ts.ejs"
+    "index.ts.ejs",
   );
 
   const templateSource = await fs.readFile(templatePath, "utf8");

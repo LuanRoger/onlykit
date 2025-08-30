@@ -17,7 +17,7 @@ export class BiomeCheckExecutor extends ExecutorCommand<BiomeCheckOptions> {
   constructor(
     options: BiomeCheckOptions,
     ignoreOut: boolean = false,
-    exitOnError: boolean = false
+    exitOnError: boolean = false,
   ) {
     super(options, ignoreOut, exitOnError);
     this.outTransformer = transformBiome;

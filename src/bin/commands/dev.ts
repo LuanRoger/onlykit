@@ -2,11 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { Command } from "commander";
 import { pathExists } from "fs-extra";
-import { devSchema } from "./schemas";
 import {
   NodemonExecuteExecutor,
   TsDownBuildExecutor,
 } from "../processes/executors";
+import { devSchema } from "./schemas";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function devAction(inputPath: string, options: any) {
@@ -48,7 +48,7 @@ async function devAction(inputPath: string, options: any) {
         outputPath: outputPathResolved,
       },
       !showBuilderLogs,
-      true
+      true,
     );
     await initialBuildExecutor.execute();
   }
@@ -60,7 +60,7 @@ async function devAction(inputPath: string, options: any) {
       watch: true,
     },
     !showBuilderLogs,
-    false
+    false,
   );
   const nodemonExecutor = new NodemonExecuteExecutor(
     {
@@ -68,7 +68,7 @@ async function devAction(inputPath: string, options: any) {
       watchPath: outputPathResolved,
     },
     !showRunnerLogs,
-    false
+    false,
   );
   await Promise.all([tsDownExecutor.execute(), nodemonExecutor.execute()]);
 }
@@ -78,7 +78,7 @@ export const devCommand = new Command()
   .description("Start the development server")
   .argument(
     "<inputPath>",
-    "Path to the input file or directory. This will be watched by the daemon."
+    "Path to the input file or directory. This will be watched by the daemon.",
   )
   .option("--output <path>", "Set the output directory", "./dist")
   .option("--execute <filePath>", "File to execute after build", "index.mjs")
@@ -87,6 +87,6 @@ export const devCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd()
+    process.cwd(),
   )
   .action(devAction);

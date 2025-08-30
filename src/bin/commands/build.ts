@@ -1,7 +1,7 @@
 import path from "node:path";
 import { Command } from "commander";
-import { buildSchema } from "./schemas";
 import { TsDownBuildExecutor } from "../processes/executors";
+import { buildSchema } from "./schemas";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function buildAction(inputPath: string, options: any) {
@@ -22,7 +22,7 @@ async function buildAction(inputPath: string, options: any) {
       watch: options.watch,
     },
     false,
-    true
+    true,
   );
 
   await tsDownExecutor.execute();
@@ -37,6 +37,6 @@ export const buildCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd()
+    process.cwd(),
   )
   .action(buildAction);

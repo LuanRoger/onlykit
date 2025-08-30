@@ -1,6 +1,6 @@
 import { Command } from "commander";
-import { checkSchema } from "./schemas/check";
 import { BiomeCheckExecutor } from "../processes/executors";
+import { checkSchema } from "./schemas/check";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function checkAction(options: any) {
@@ -15,7 +15,7 @@ async function checkAction(options: any) {
       write,
     },
     false,
-    true
+    true,
   );
 
   await biomeExecutor.execute();

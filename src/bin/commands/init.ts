@@ -2,13 +2,13 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { Command } from "commander";
 import ora from "ora";
-import { initSchema } from "./schemas";
 import {
   createBiomeConfig,
   createTemplateFile,
   createTsConfig,
   updatePackageJson,
 } from "../files";
+import { initSchema } from "./schemas";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function initAction(projectName: string, options: any) {
@@ -53,6 +53,6 @@ export const initCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd()
+    process.cwd(),
   )
   .action(initAction);

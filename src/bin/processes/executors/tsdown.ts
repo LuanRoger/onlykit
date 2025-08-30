@@ -18,7 +18,7 @@ export class TsDownBuildExecutor extends ExecutorCommand<TsDownBuildOptions> {
   constructor(
     options: TsDownBuildOptions,
     ignoreOut: boolean = false,
-    exitOnError: boolean = false
+    exitOnError: boolean = false,
   ) {
     super(options, ignoreOut, exitOnError);
     this.outTransformer = transformTsDown;

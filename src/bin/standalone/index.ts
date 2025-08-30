@@ -1,5 +1,5 @@
-import { ensureDir, pathExists, remove } from "fs-extra";
 import path from "node:path";
+import { ensureDir, pathExists, remove } from "fs-extra";
 import { STANDALONE_ENVIRONMENT_FOLDER } from "../constants";
 
 export class StandaloneEnvironment {
@@ -13,7 +13,7 @@ export class StandaloneEnvironment {
     this.standaloneOutputPath = path.join(this.standalonePath, "dist");
     this.standaloneOutputEntryPoint = path.join(
       this.standaloneOutputPath,
-      "index.mjs"
+      "index.mjs",
     );
   }
 

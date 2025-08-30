@@ -16,7 +16,7 @@ export class NodemonExecuteExecutor extends ExecutorCommand<NodemonExecuteOption
   constructor(
     options: NodemonExecuteOptions,
     ignoreOut: boolean = false,
-    exitOnError: boolean = false
+    exitOnError: boolean = false,
   ) {
     super(options, ignoreOut, exitOnError);
     this.outTransformer = transformNodemon;
