@@ -5,6 +5,7 @@ import { StandaloneEnvironment } from "../standalone";
 import { normalizePath } from "../utils/path";
 import { $ } from "execa";
 import ora from "ora";
+import { createTsConfig } from "../files";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function runAction(entryPoint: string, options: any) {
@@ -13,7 +14,7 @@ async function runAction(entryPoint: string, options: any) {
     ...options,
   });
 
-  const { entryPoint: parsedEntryPoint, cwd: parsedCwd } = result;
+  const { entryPoint: parsedEntryPoint, cwd: parsedCwd, noTsconfig } = result;
 
   const cwd = path.resolve(parsedCwd);
   const entryPointResolved = path.resolve(cwd, parsedEntryPoint);
@@ -29,6 +30,10 @@ async function runAction(entryPoint: string, options: any) {
   process.on("exit", cleanup);
 
   const spinner = ora("Building project...").start();
+
+  if (!noTsconfig) {
+    await createTsConfig(cwd);
+  }
   const { failed } = await $({
     stdout: "ignore",
   })`tsdown ${normalizePath(entryPointResolved)} -d ${normalizePath(
@@ -53,5 +58,6 @@ export const runCommand = new Command("run")
   .description("Run your project in standalone mode")
   .argument("<entryPoint>", "Path to the entry point file")
   .option("--watch", "Watch for file changes and re-run", false)
+  .option("--no-tsconfig", "Do not use tsconfig.json", false)
   .option("--cwd <path>", "Set the current working directory", process.cwd())
   .action(runAction);
