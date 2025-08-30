@@ -26,7 +26,7 @@ export class BiomeCheckExecutor extends ExecutorCommand<BiomeCheckOptions> {
   mountArgs(): string[] {
     const { cwd, write } = this.options;
 
-    return [normalizePath(cwd), ...(write ? ["--write"] : [])];
+    return ["check", ...(write ? ["--write"] : []), normalizePath(cwd)];
   }
 
   async execute() {
