@@ -1,5 +1,16 @@
 import asc from "assemblyscript/asc";
-import { readFileSync, writeFileSync, unlinkSync } from "node:fs";
+import { readFile, writeFileSync, readFileSync, unlinkSync } from "node:fs";
+import path from "node:path";
+import {
+  D_TS_EXTENSION,
+  JS_EXTENSION,
+  TS_EXTENSION,
+  TS_TEMP_EXTENSION,
+  WASM_DIRECTIVE_REGEX,
+  WASM_EXTENSION,
+  WASM_TEXT_EXTENSION,
+} from "./constants";
+import { StandaloneEnvironment } from "@/bin/standalone";
 
 interface AssemblyScriptOptions {
   optimize?: boolean;
@@ -52,17 +63,14 @@ export default function webAssemblySupport(
   return {
     name: "wasm-support",
 
-    load(id: string) {
-      if (!id.endsWith(".ts")) return null;
+    async load(id: string) {
+      const isTsFile = id.endsWith(".ts");
+      if (!isTsFile) return null;
 
       try {
         const code = readFileSync(id, "utf-8");
-
-        // Check for "use wasm" directive
-        if (
-          !code.trim().startsWith('"use wasm"') &&
-          !code.trim().startsWith("'use wasm'")
-        ) {
+        const hasWasmDirective = WASM_DIRECTIVE_REGEX.test(code.trim());
+        if (!hasWasmDirective) {
           return null;
         }
 
@@ -73,28 +81,47 @@ export default function webAssemblySupport(
     },
 
     async transform(code: string, id: string) {
-      if (
-        !code.trim().startsWith('"use wasm"') &&
-        !code.trim().startsWith("'use wasm'")
-      ) {
+      const hasWasmDirective = WASM_DIRECTIVE_REGEX.test(code.trim());
+      if (!hasWasmDirective) {
         return null;
       }
 
-      // Remove the "use wasm" directive for AssemblyScript compilation
-      const cleanCode = code.replace(/^["']use wasm["'];?\s*/, "");
+      const cleanCode = code.replace(WASM_DIRECTIVE_REGEX, "");
+      const fileName = path.basename(id);
+      const cwd = process.cwd();
+      const tempCodeFileName = fileName.replace(
+        TS_EXTENSION,
+        TS_TEMP_EXTENSION
+      );
+      const wasmFileName = fileName.replace(TS_EXTENSION, WASM_EXTENSION);
+      const wasmTextFileName = fileName.replace(
+        TS_EXTENSION,
+        WASM_TEXT_EXTENSION
+      );
+      const jsBindingsFileName = fileName.replace(TS_EXTENSION, JS_EXTENSION);
 
-      // Write temporary file for AssemblyScript compiler
-      const tempFile = id.replace(".ts", ".temp.ts");
-      writeFileSync(tempFile, cleanCode);
+      const standaloneEnvironment = new StandaloneEnvironment(cwd);
+      const outFilePath = path.join(
+        standaloneEnvironment.standaloneOutputPath,
+        wasmFileName
+      );
+      const textFilePath = path.join(
+        standaloneEnvironment.standaloneOutputPath,
+        wasmTextFileName
+      );
+      const jsBindingsPath = path.join(
+        standaloneEnvironment.standaloneOutputPath,
+        jsBindingsFileName
+      );
 
-      // Compile with AssemblyScript and generate bindings
-      const wasmFile = id.replace(".ts", ".wasm");
-      const jsBindingsFile = id.replace(".ts", ".js");
+      writeFileSync(tempCodeFileName, cleanCode);
 
       const compilerOptions = [
-        tempFile,
+        tempCodeFileName,
         "--outFile",
-        wasmFile,
+        outFilePath,
+        "--textFile",
+        textFilePath,
         "--bindings",
         "esm",
         "--exportRuntime",
@@ -111,27 +138,7 @@ export default function webAssemblySupport(
           throw new Error(`AssemblyScript compilation failed: ${stderr}`);
         }
 
-        // Read the generated JavaScript bindings
-        const generatedBindings = readFileSync(jsBindingsFile, "utf-8");
-
-        // Also emit the WASM file as an asset so it's included in the bundle
-        const wasmBuffer = readFileSync(wasmFile);
-        const wasmFileName = wasmFile.split(/[/\\]/).pop() || "module.wasm"; // Get just the filename
-
-        (this as any).emitFile({
-          type: "asset",
-          fileName: wasmFileName,
-          source: wasmBuffer,
-        });
-
-        // Clean up temp files and generated files in source directory
-        const dtsFile = id.replace(".ts", ".d.ts");
-        try {
-          unlinkSync(tempFile);
-          unlinkSync(jsBindingsFile);
-          unlinkSync(wasmFile);
-          unlinkSync(dtsFile); // Also clean up the .d.ts file
-        } catch {}
+        const generatedBindings = readFileSync(jsBindingsPath, "utf-8");
 
         return {
           code: generatedBindings,
