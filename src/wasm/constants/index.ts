@@ -1,4 +1,5 @@
 export const WASM_EXTENSION = ".wasm";
+export const WASM_MAP_EXTENSION = ".wasm.map";
 export const WASM_TEXT_EXTENSION = ".wat";
 export const TS_EXTENSION = ".ts";
 export const D_TS_EXTENSION = ".d.ts";

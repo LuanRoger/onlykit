@@ -8,9 +8,11 @@ import {
   TS_TEMP_EXTENSION,
   WASM_DIRECTIVE_REGEX,
   WASM_EXTENSION,
+  WASM_MAP_EXTENSION,
   WASM_TEXT_EXTENSION,
 } from "./constants";
 import { StandaloneEnvironment } from "@/bin/standalone";
+import { readJsonSync } from "fs-extra";
 
 interface AssemblyScriptOptions {
   optimize?: boolean;
@@ -99,6 +101,11 @@ export default function webAssemblySupport(
         WASM_TEXT_EXTENSION
       );
       const jsBindingsFileName = fileName.replace(TS_EXTENSION, JS_EXTENSION);
+      const dTsFileName = fileName.replace(TS_EXTENSION, D_TS_EXTENSION);
+      const sourceMapFileName = fileName.replace(
+        TS_EXTENSION,
+        WASM_MAP_EXTENSION
+      );
 
       const standaloneEnvironment = new StandaloneEnvironment(cwd);
       const outFilePath = path.join(
@@ -113,6 +120,14 @@ export default function webAssemblySupport(
         standaloneEnvironment.standaloneOutputPath,
         jsBindingsFileName
       );
+      const dTsPath = path.join(
+        standaloneEnvironment.standaloneOutputPath,
+        dTsFileName
+      );
+      const sourceMapPath = path.join(
+        standaloneEnvironment.standaloneOutputPath,
+        sourceMapFileName
+      );
 
       writeFileSync(tempCodeFileName, cleanCode);
 
@@ -124,7 +139,7 @@ export default function webAssemblySupport(
         textFilePath,
         "--bindings",
         "esm",
-        "--exportRuntime",
+        "--sourceMap",
         ...getCompilerFlags(options),
       ];
 
@@ -138,11 +153,38 @@ export default function webAssemblySupport(
           throw new Error(`AssemblyScript compilation failed: ${stderr}`);
         }
 
+        const wasmBinaryContent = readFileSync(outFilePath);
+        const wasmTextContent = readFileSync(textFilePath, "utf-8");
         const generatedBindings = readFileSync(jsBindingsPath, "utf-8");
+        const dTsContent = readFileSync(dTsPath, "utf-8");
+        const sourceMap = readJsonSync(sourceMapPath, "utf-8");
+
+        (this as any).emitFile({
+          type: "asset",
+          fileName: path.join("wasm", wasmFileName),
+          source: wasmBinaryContent,
+        });
+        (this as any).emitFile({
+          type: "asset",
+          fileName: path.join("wasm", wasmTextFileName),
+          source: wasmTextContent,
+        });
+        (this as any).emitFile({
+          type: "asset",
+          fileName: path.join("wasm", jsBindingsFileName),
+          source: generatedBindings,
+        });
+        (this as any).emitFile({
+          type: "asset",
+          fileName: path.join("wasm", dTsFileName),
+          source: dTsContent,
+        });
+
+        await standaloneEnvironment.clean();
 
         return {
           code: generatedBindings,
-          map: null,
+          map: sourceMap,
         };
       } catch (error) {
         if (error instanceof Error) {
