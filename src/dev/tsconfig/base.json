@@ -16,11 +16,9 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "preserveConstEnums": false,
     "noEmitOnError": true,
-    "typeRoots": [ "types" ],
-    "types": [ "assembly" ],
+    "types": ["assembly"],
   },
-  "include": ["src"],
+  "baseUrl": ".",
   "exclude": ["node_modules", "**/node_modules/*"]
 }
