@@ -10,7 +10,16 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "preserveConstEnums": false,
+    "noEmitOnError": true,
+    "typeRoots": [ "types" ],
+    "types": [ "assembly" ],
   },
   "include": ["src"],
   "exclude": ["node_modules", "**/node_modules/*"]
