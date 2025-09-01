@@ -1,24 +1,23 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "assemblyscript/std/portable.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
+    "lib": ["ESNext"],
+    "noLib": false,
     "allowJs": false,
     "strict": true,
     "skipLibCheck": true,
-    "isolatedModules": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
     "noEmitOnError": true,
-    "types": ["assembly"],
+    "types": ["portable"],
+    "baseUrl": "."
   },
-  "baseUrl": ".",
   "exclude": ["node_modules", "**/node_modules/*"]
 }

@@ -98,6 +98,11 @@
       "import": "./dist/cli/index.js",
       "require": "./dist/cli/index.cjs"
     },
+    "./benchmark": {
+      "types": "./dist/benchmark/index.d.ts",
+      "import": "./dist/benchmark/index.js",
+      "require": "./dist/benchmark/index.cjs"
+    },
     "./dev": {
       "types": "./dist/dev/index.d.ts",
       "import": "./dist/dev/index.js",
@@ -134,6 +139,7 @@
     "hono": "^4.9.2",
     "ky": "^1.8.2",
     "nodemon": "^3.1.10",
+    "mitata": "^1.0.34",
     "ora": "^8.2.0",
     "tsdown": "^0.14.1",
     "type-fest": "^4.41.0",
