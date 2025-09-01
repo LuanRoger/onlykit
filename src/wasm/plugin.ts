@@ -94,10 +94,6 @@ export default function webAssemblySupport(
       const cleanCode = code.replace(WASM_DIRECTIVE_REGEX, "");
       const fileName = path.basename(id);
       const cwd = process.cwd();
-      const tempCodeFileName = fileName.replace(
-        TS_EXTENSION,
-        TS_TEMP_EXTENSION,
-      );
       const wasmFileName = fileName.replace(TS_EXTENSION, WASM_EXTENSION);
       const wasmTextFileName = fileName.replace(
         TS_EXTENSION,
@@ -111,6 +107,11 @@ export default function webAssemblySupport(
       );
 
       const standaloneEnvironment = new StandaloneEnvironment(cwd);
+      const tempCodeFileName = path.join(
+        standaloneEnvironment.standaloneOutputPath,
+        fileName,
+      );
+      await standaloneEnvironment.setup();
       const outFilePath = path.join(
         standaloneEnvironment.standaloneOutputPath,
         wasmFileName,
