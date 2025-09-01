@@ -5,6 +5,7 @@ import { ExecutorCommand } from "./executor";
 
 interface TsDownExecutorOptions {
   inputPath: string;
+  configPath?: string;
 }
 
 export interface TsDownBuildOptions extends TsDownExecutorOptions {
@@ -18,20 +19,23 @@ export class TsDownBuildExecutor extends ExecutorCommand<TsDownBuildOptions> {
   constructor(
     options: TsDownBuildOptions,
     ignoreOut: boolean = false,
-    exitOnError: boolean = false,
+    exitOnError: boolean = false
   ) {
     super(options, ignoreOut, exitOnError);
     this.outTransformer = transformTsDown;
   }
 
   mountArgs(): string[] {
-    const { inputPath, outputPath, watch = false } = this.options;
+    const { inputPath, configPath, outputPath, watch = false } = this.options;
 
     return [
       ...(watch ? ["--watch"] : []),
       normalizePath(inputPath),
       "-d",
       normalizePath(outputPath),
+      ...(configPath
+        ? ["--config", normalizePath(configPath)]
+        : ["--no-config"]),
     ];
   }
 
