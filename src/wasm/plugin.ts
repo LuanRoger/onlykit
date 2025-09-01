@@ -1,6 +1,6 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** biome-ignore-all lint/suspicious/noExplicitAny: tsdown has no exported type for plugin */
 import asc from "assemblyscript/asc";
-import { writeFileSync, readFileSync } from "node:fs";
+import { writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import {
   BINDINGS_DEFAULT_WASM_URL_REGEX,
@@ -14,7 +14,7 @@ import {
   WASM_TEXT_EXTENSION,
 } from "./constants";
 import { StandaloneEnvironment } from "@/bin/standalone";
-import { readJsonSync } from "fs-extra";
+import { readJson } from "fs-extra";
 
 interface AssemblyScriptOptions {
   optimize?: boolean;
@@ -72,7 +72,7 @@ export default function webAssemblySupport(
       if (!isTsFile) return null;
 
       try {
-        const code = readFileSync(id, "utf-8");
+        const code = await readFile(id, "utf-8");
         const hasWasmDirective = WASM_DIRECTIVE_REGEX.test(code.trim());
         if (!hasWasmDirective) {
           return null;
@@ -131,7 +131,7 @@ export default function webAssemblySupport(
         sourceMapFileName
       );
 
-      writeFileSync(tempCodeFileName, cleanCode);
+      await writeFile(tempCodeFileName, cleanCode);
 
       const compilerOptions = [
         tempCodeFileName,
@@ -155,11 +155,19 @@ export default function webAssemblySupport(
           throw new Error(`AssemblyScript compilation failed: ${stderr}`);
         }
 
-        const wasmBinaryContent = readFileSync(outFilePath);
-        const wasmTextContent = readFileSync(textFilePath, "utf-8");
-        const generatedBindings = readFileSync(jsBindingsPath, "utf-8");
-        const dTsContent = readFileSync(dTsPath, "utf-8");
-        const sourceMap = readJsonSync(sourceMapPath, "utf-8");
+        const [
+          wasmBinaryContent,
+          wasmTextContent,
+          generatedBindings,
+          dTsContent,
+          sourceMap,
+        ] = await Promise.all([
+          readFile(outFilePath),
+          readFile(textFilePath, "utf-8"),
+          readFile(jsBindingsPath, "utf-8"),
+          readFile(dTsPath, "utf-8"),
+          readJson(sourceMapPath, "utf-8"),
+        ]);
 
         const referenceId = (this as any).emitFile({
           type: "asset",
