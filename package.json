@@ -37,7 +37,8 @@
     "utils",
     "starter",
     "template",
-    "boilerplate"
+    "boilerplate",
+    "wasm"
   ],
   "scripts": {
     "dev": "rolldown -c rolldown.config.ts -w",
