@@ -1,8 +1,8 @@
 import path from "node:path";
 import { Command } from "commander";
+import { exists } from "fs-extra";
 import { TsDownBuildExecutor } from "../processes/executors";
 import { buildSchema } from "./schemas";
-import { exists } from "fs-extra";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function buildAction(inputPath: string, options: any) {
@@ -28,7 +28,7 @@ async function buildAction(inputPath: string, options: any) {
       configPath: doesConfigPathExist ? configPathResolved : undefined,
     },
     false,
-    true
+    true,
   );
 
   await tsDownExecutor.execute();
@@ -43,7 +43,7 @@ export const buildCommand = new Command()
   .option(
     "-c, --config <configPath>",
     "Path to the config file",
-    "./tsdown.config.ts"
+    "./tsdown.config.ts",
   )
   .option("--cwd <path>", "Set the current working directory", process.cwd())
   .action(buildAction);

@@ -1,7 +1,10 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: tsdown has no exported type for plugin */
-import asc from "assemblyscript/asc";
-import { writeFile, readFile } from "node:fs/promises";
+
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import asc from "assemblyscript/asc";
+import { readJson } from "fs-extra";
+import { StandaloneEnvironment } from "@/bin/standalone";
 import {
   BINDINGS_DEFAULT_WASM_URL_REGEX,
   D_TS_EXTENSION,
@@ -13,8 +16,6 @@ import {
   WASM_MAP_EXTENSION,
   WASM_TEXT_EXTENSION,
 } from "./constants";
-import { StandaloneEnvironment } from "@/bin/standalone";
-import { readJson } from "fs-extra";
 
 interface AssemblyScriptOptions {
   optimize?: boolean;
@@ -62,7 +63,7 @@ function getCompilerFlags(options: AssemblyScriptOptions): string[] {
 }
 
 export default function webAssemblySupport(
-  options: AssemblyScriptOptions = {}
+  options: AssemblyScriptOptions = {},
 ) {
   return {
     name: "wasm-support",
@@ -95,40 +96,40 @@ export default function webAssemblySupport(
       const cwd = process.cwd();
       const tempCodeFileName = fileName.replace(
         TS_EXTENSION,
-        TS_TEMP_EXTENSION
+        TS_TEMP_EXTENSION,
       );
       const wasmFileName = fileName.replace(TS_EXTENSION, WASM_EXTENSION);
       const wasmTextFileName = fileName.replace(
         TS_EXTENSION,
-        WASM_TEXT_EXTENSION
+        WASM_TEXT_EXTENSION,
       );
       const jsBindingsFileName = fileName.replace(TS_EXTENSION, JS_EXTENSION);
       const dTsFileName = fileName.replace(TS_EXTENSION, D_TS_EXTENSION);
       const sourceMapFileName = fileName.replace(
         TS_EXTENSION,
-        WASM_MAP_EXTENSION
+        WASM_MAP_EXTENSION,
       );
 
       const standaloneEnvironment = new StandaloneEnvironment(cwd);
       const outFilePath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        wasmFileName
+        wasmFileName,
       );
       const textFilePath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        wasmTextFileName
+        wasmTextFileName,
       );
       const jsBindingsPath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        jsBindingsFileName
+        jsBindingsFileName,
       );
       const dTsPath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        dTsFileName
+        dTsFileName,
       );
       const sourceMapPath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        sourceMapFileName
+        sourceMapFileName,
       );
 
       await writeFile(tempCodeFileName, cleanCode);
@@ -189,7 +190,7 @@ export default function webAssemblySupport(
 
         const resolvedBindings = generatedBindings.replace(
           BINDINGS_DEFAULT_WASM_URL_REGEX,
-          `new URL(import.meta.ROLLUP_FILE_URL_${referenceId})`
+          `new URL(import.meta.ROLLUP_FILE_URL_${referenceId})`,
         );
         return {
           code: resolvedBindings,
@@ -198,7 +199,7 @@ export default function webAssemblySupport(
       } catch (error) {
         if (error instanceof Error) {
           throw new Error(
-            `AssemblyScript compilation failed: ${error.message}`
+            `AssemblyScript compilation failed: ${error.message}`,
           );
         }
       }
