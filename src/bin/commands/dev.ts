@@ -26,10 +26,12 @@ async function devAction(inputPath: string, options: any) {
 
   const cwd = path.resolve(parsedCwd);
   const inputPathResolved = path.resolve(cwd, parsedInputPath);
-
   const outputPathResolved = path.resolve(cwd, output);
   const outputFilePath = path.join(outputPathResolved, execute);
+  const tsdownConfig = path.join(cwd, "tsdown.config.ts");
+
   const doesOutputPathExist = await pathExists(outputFilePath);
+  const doesTsDownConfigExist = await pathExists(tsdownConfig);
 
   if (!doesOutputPathExist) {
     const inputIsPathFile = fs.lstatSync(inputPathResolved).isFile();
@@ -46,9 +48,10 @@ async function devAction(inputPath: string, options: any) {
       {
         inputPath: entryFileName,
         outputPath: outputPathResolved,
+        configPath: doesTsDownConfigExist ? tsdownConfig : undefined,
       },
       !showBuilderLogs,
-      true,
+      true
     );
     await initialBuildExecutor.execute();
   }
@@ -57,10 +60,11 @@ async function devAction(inputPath: string, options: any) {
     {
       inputPath: inputPathResolved,
       outputPath: outputPathResolved,
+      configPath: doesTsDownConfigExist ? tsdownConfig : undefined,
       watch: true,
     },
     !showBuilderLogs,
-    false,
+    false
   );
   const nodemonExecutor = new NodemonExecuteExecutor(
     {
@@ -68,7 +72,7 @@ async function devAction(inputPath: string, options: any) {
       watchPath: outputPathResolved,
     },
     !showRunnerLogs,
-    false,
+    false
   );
   await Promise.all([tsDownExecutor.execute(), nodemonExecutor.execute()]);
 }
@@ -78,7 +82,7 @@ export const devCommand = new Command()
   .description("Start the development server")
   .argument(
     "<inputPath>",
-    "Path to the input file or directory. This will be watched by the daemon.",
+    "Path to the input file or directory. This will be watched by the daemon."
   )
   .option("--output <path>", "Set the output directory", "./dist")
   .option("--execute <filePath>", "File to execute after build", "index.mjs")
@@ -87,6 +91,6 @@ export const devCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd(),
+    process.cwd()
   )
   .action(devAction);
