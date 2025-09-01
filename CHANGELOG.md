@@ -1,3 +1,39 @@
+## [0.2.0-0] - 2025-09-01
+
+### 🚀 Features
+
+- *(wasm)* Create tsdown plugin to compile to wasm
+- *(dev)* Update tsconfig types
+- *(dev)* Add wasm plugin in the tsdown base config
+- *(dev)* Add assembly types to base config
+- *(wasm)* Emit files in the dist folder
+- *(wasm)* Compile to virtual module
+- *(bin)* Support tsdown config fle in build
+- *(benchmark)* Export mitata as benchmark lib
+
+### 🐛 Bug Fixes
+
+- *(wasm)* Write temp files in to standalone environment
+
+### 🚜 Refactor
+
+- *(wasm)* Remove unescessary calls
+- *(wasm)* Remove binding cache and transform JS binding
+- *(wasm)* Remove unescessary consts
+
+### ⚡ Performance
+
+- *(wasm)* Use async in fs
+
+### 🎨 Styling
+
+- Run Biome
+
+### ⚙️ Miscellaneous Tasks
+
+- Update CHANGELOG
+- *(dev)* Extends AssemblyScript types
+- Add wasm keyword
 ## [0.1.0] - 2025-08-30
 
 ### 🚀 Features
