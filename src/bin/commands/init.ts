@@ -24,18 +24,34 @@ async function initAction(projectName: string, options: any) {
   try {
     const projectRoot = path.resolve(cwd, parsedProjectName);
     const srcDir = path.join(projectRoot, "src");
+    const indexTemplateTargetPath = path.join(srcDir, "index.ts");
+    const tsDownConfigTemplateTargetPath = path.join(
+      projectRoot,
+      "tsdown.config.ts"
+    );
 
     await fs.mkdir(srcDir, { recursive: true });
 
     spinner.text = "Creating package.json and tsconfig.json...";
     await Promise.all([
-      await updatePackageJson(projectRoot),
-      await createTsConfig(projectRoot),
-      await createBiomeConfig(projectRoot),
+      updatePackageJson(projectRoot),
+      createTsConfig(projectRoot),
+      createBiomeConfig(projectRoot),
     ]);
 
     spinner.text = "Creating template files...";
-    await createTemplateFile(parsedProjectName, srcDir, template);
+    await Promise.all([
+      await createTemplateFile(
+        indexTemplateTargetPath,
+        "index.ts.ejs",
+        template
+      ),
+      await createTemplateFile(
+        tsDownConfigTemplateTargetPath,
+        "tsdown.config.ts.ejs",
+        "config"
+      ),
+    ]);
 
     spinner.succeed("Project initialized");
   } catch (err) {
@@ -53,6 +69,6 @@ export const initCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd(),
+    process.cwd()
   )
   .action(initAction);
