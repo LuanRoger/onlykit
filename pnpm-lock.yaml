@@ -32,6 +32,9 @@ importers:
       '@types/node':
         specifier: ^24.3.0
         version: 24.3.0
+      assemblyscript:
+        specifier: ^0.28.5
+        version: 0.28.5
       chalk:
         specifier: ^5.6.0
         version: 5.6.0
@@ -597,6 +600,11 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
+  assemblyscript@0.28.5:
+    resolution: {integrity: sha512-vEbqytGS6Td8zmaW5mpFvVg82iJjQhBHtAx/h8l0bBLyQstlNFvFHly0dHzjtPPcf3cqfh/dtGtfJlgWDj8FQw==}
+    engines: {node: '>=20', npm: '>=10'}
+    hasBin: true
+
   ast-kit@2.1.2:
     resolution: {integrity: sha512-cl76xfBQM6pztbrFWRnxbrDm9EOqDr1BF6+qQnnDZG2Co2LjyUktkN9GTJfBAfdae+DbT2nJf2nCGAdDDN7W2g==}
     engines: {node: '>=20.18.0'}
@@ -613,6 +621,10 @@ packages:
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
+
+  binaryen@123.0.0-nightly.20250530:
+    resolution: {integrity: sha512-d1zPHBN5YlOd3Ff+OUxvVExuFeh8heSnqe+X3bjItFxGLvn4VGBKmrvv7pgy/cRhrIUGuPW138iaWfDhwjyDqg==}
+    hasBin: true
 
   birpc@2.5.0:
     resolution: {integrity: sha512-VSWO/W6nNQdyP520F1mhf+Lc2f8pjGQOtoHHm7Ze8Go1kX7akpVIrtTa0fn+HB0QJEDVacl6aO08YE0PgXfdnQ==}
@@ -1320,6 +1332,9 @@ packages:
   log-update@2.3.0:
     resolution: {integrity: sha512-vlP11XfFGyeNQlmEn9tJ66rEW1coA/79m5z6BCkudjbAGE83uhAcGYrBFwfs3AdLiLzGRusRPAbSPK9xZteCmg==}
     engines: {node: '>=4'}
+
+  long@5.3.2:
+    resolution: {integrity: sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==}
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
@@ -2403,6 +2418,11 @@ snapshots:
 
   argparse@2.0.1: {}
 
+  assemblyscript@0.28.5:
+    dependencies:
+      binaryen: 123.0.0-nightly.20250530
+      long: 5.3.2
+
   ast-kit@2.1.2:
     dependencies:
       '@babel/parser': 7.28.3
@@ -2418,6 +2438,8 @@ snapshots:
   balanced-match@1.0.2: {}
 
   binary-extensions@2.3.0: {}
+
+  binaryen@123.0.0-nightly.20250530: {}
 
   birpc@2.5.0: {}
 
@@ -3098,6 +3120,8 @@ snapshots:
       ansi-escapes: 3.2.0
       cli-cursor: 2.1.0
       wrap-ansi: 3.0.1
+
+  long@5.3.2: {}
 
   lru-cache@10.4.3: {}
 

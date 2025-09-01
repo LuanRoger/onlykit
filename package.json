@@ -42,6 +42,7 @@
   "scripts": {
     "dev": "rolldown -c rolldown.config.ts -w",
     "build": "tsdown --config tsdown.config.ts",
+    "build:wasm": "tsdown --config ./src/wasm/tsdown.config.ts",
     "lint": "biome lint",
     "lint:write": "biome lint --write",
     "format": "biome format",
@@ -102,6 +103,11 @@
       "import": "./dist/dev/index.js",
       "require": "./dist/dev/index.cjs"
     },
+    "./wasm": {
+      "types": "./dist/wasm/index.d.ts",
+      "import": "./dist/wasm/index.js",
+      "require": "./dist/wasm/index.cjs"
+    },
     "./dev/tsconfig": "./dist/dev/tsconfig/base.json",
     "./dev/biome": "./dist/dev/biome/base.json"
   },
@@ -119,6 +125,7 @@
     "@types/figlet": "^1.7.0",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^24.3.0",
+    "assemblyscript": "^0.28.5",
     "chalk": "^5.6.0",
     "commander": "^14.0.0",
     "execa": "^9.6.0",

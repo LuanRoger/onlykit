@@ -19,6 +19,7 @@ export default defineConfig({
     "server/quick/index": "src/server/quick/index.ts",
     "client/index": "src/client/index.ts",
     "cli/index": "src/cli/index.ts",
+    "wasm/index": "src/wasm/index.ts",
   },
   copy: [
     { from: "src/dev/biome/base.json", to: "dist/dev/biome/base.json" },
