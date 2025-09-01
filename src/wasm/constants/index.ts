@@ -8,3 +8,5 @@ export const TS_TEMP_EXTENSION = ".temp.ts";
 
 export const WASM_MODULE_DIRECTIVE = "use wasm";
 export const WASM_DIRECTIVE_REGEX = /^["']use wasm["'];?\s*/;
+export const BINDINGS_DEFAULT_WASM_URL_REGEX =
+  /new URL\(".*?\.wasm", import\.meta\.url\)/g;

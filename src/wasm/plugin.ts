@@ -1,7 +1,9 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import asc from "assemblyscript/asc";
-import { readFile, writeFileSync, readFileSync, unlinkSync } from "node:fs";
+import { writeFileSync, readFileSync } from "node:fs";
 import path from "node:path";
 import {
+  BINDINGS_DEFAULT_WASM_URL_REGEX,
   D_TS_EXTENSION,
   JS_EXTENSION,
   TS_EXTENSION,
@@ -9,7 +11,6 @@ import {
   WASM_DIRECTIVE_REGEX,
   WASM_EXTENSION,
   WASM_MAP_EXTENSION,
-  WASM_MODULE_DIRECTIVE,
   WASM_TEXT_EXTENSION,
 } from "./constants";
 import { StandaloneEnvironment } from "@/bin/standalone";
@@ -63,50 +64,10 @@ function getCompilerFlags(options: AssemblyScriptOptions): string[] {
 export default function webAssemblySupport(
   options: AssemblyScriptOptions = {}
 ) {
-  const bindingsCache = new Map<string, string>();
-
   return {
     name: "wasm-support",
 
-    resolveId(id: string) {
-      // Handle virtual wasm bindings modules
-      if (id.startsWith("virtual:wasm-bindings-")) {
-        return id;
-      }
-      return null;
-    },
-
     async load(id: string) {
-      if (id.startsWith("virtual:wasm-bindings-")) {
-        const moduleName = id.replace("virtual:wasm-bindings-", "");
-
-        // First check the cache
-        if (bindingsCache.has(moduleName)) {
-          return bindingsCache.get(moduleName);
-        }
-
-        // Fallback to reading from file system if available
-        const originalFileName = moduleName + TS_EXTENSION;
-        const jsBindingsFileName = originalFileName.replace(
-          TS_EXTENSION,
-          JS_EXTENSION
-        );
-        const cwd = process.cwd();
-        const standaloneEnvironment = new StandaloneEnvironment(cwd);
-        const jsBindingsPath = path.join(
-          standaloneEnvironment.standaloneOutputPath,
-          jsBindingsFileName
-        );
-
-        try {
-          const content = readFileSync(jsBindingsPath, "utf-8");
-          bindingsCache.set(moduleName, content);
-          return content;
-        } catch {
-          return null;
-        }
-      }
-
       const isTsFile = id.endsWith(TS_EXTENSION);
       if (!isTsFile) return null;
 
@@ -200,9 +161,6 @@ export default function webAssemblySupport(
         const dTsContent = readFileSync(dTsPath, "utf-8");
         const sourceMap = readJsonSync(sourceMapPath, "utf-8");
 
-        const moduleName = path.basename(id, TS_EXTENSION);
-        bindingsCache.set(moduleName, generatedBindings);
-
         const referenceId = (this as any).emitFile({
           type: "asset",
           fileName: path.join("wasm", wasmFileName),
@@ -215,29 +173,19 @@ export default function webAssemblySupport(
         });
         (this as any).emitFile({
           type: "asset",
-          fileName: path.join("wasm", jsBindingsFileName),
-          source: generatedBindings,
-        });
-        (this as any).emitFile({
-          type: "asset",
           fileName: path.join("wasm", dTsFileName),
           source: dTsContent,
         });
 
         await standaloneEnvironment.clean();
-        const virtualId = `virtual:wasm-bindings-${path.basename(
-          id,
-          TS_EXTENSION
-        )}`;
 
+        const resolvedBindings = generatedBindings.replace(
+          BINDINGS_DEFAULT_WASM_URL_REGEX,
+          `new URL(import.meta.ROLLUP_FILE_URL_${referenceId})`
+        );
         return {
-          code: `
-        export const wasmUrl = import.meta.ROLLUP_FILE_URL_${referenceId};
-        export * from "${virtualId}";
-
-        export { wasmUrl };
-      `,
-          map: null,
+          code: resolvedBindings,
+          map: sourceMap,
         };
       } catch (error) {
         if (error instanceof Error) {
