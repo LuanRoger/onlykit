@@ -4,7 +4,7 @@ import { normalizePath } from "../../utils/path";
 import { ExecutorCommand } from "./executor";
 
 interface TsDownExecutorOptions {
-  inputPath: string;
+  inputPath?: string;
   configPath?: string;
 }
 
@@ -30,7 +30,7 @@ export class TsDownBuildExecutor extends ExecutorCommand<TsDownBuildOptions> {
 
     return [
       ...(watch ? ["--watch"] : []),
-      normalizePath(inputPath),
+      ...(inputPath ? [normalizePath(inputPath)] : []),
       "-d",
       normalizePath(outputPath),
       ...(configPath
