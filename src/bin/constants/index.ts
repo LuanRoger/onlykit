@@ -5,7 +5,7 @@ export const TS_CONFIG = {
   compilerOptions: {
     typeRoots: ["node_modules/@types", "node_modules/onlykit/dist"],
   },
-  include: ["src/**/*.ts"],
+  include: ["src/**/*.ts", "./tsdown.config.ts"],
 };
 
 export const BIOME_CONFIG = {
