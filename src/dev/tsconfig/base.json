@@ -16,7 +16,7 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "noEmitOnError": true,
-    "types": ["portable"],
+    "types": ["types"],
     "baseUrl": "."
   },
   "exclude": ["node_modules", "**/node_modules/*"]
