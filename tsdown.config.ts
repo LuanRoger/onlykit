@@ -20,6 +20,7 @@ export default defineConfig({
     "server/quick/index": "src/server/quick/index.ts",
     "client/index": "src/client/index.ts",
     "cli/index": "src/cli/index.ts",
+    "validation/index": "src/validation/index.ts",
     "wasm/index": "src/wasm/index.ts",
   },
   copy: [
