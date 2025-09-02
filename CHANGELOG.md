@@ -1,3 +1,23 @@
+## [0.2.1] - 2025-09-02
+
+### 🚀 Features
+
+- *(dev)* Export AssemblyScript types and tsdown defineConfig
+- *(bin)* InputPath optional in build command
+
+### 🐛 Bug Fixes
+
+- *(dev)* Copy types path
+- *(dev)* Use types in base
+- *(bin)* Generate tsconfig with dist as typeRoot
+- *(dev)* Remove extend from assemblyscript
+- *(bin)* Update generate tsconfig include field
+
+### ⚙️ Miscellaneous Tasks
+
+- Update CHANGELOG
+- Add tsdown config in tsconfig
+- Move assemblyscript back to peerDependencies
 ## [0.2.0] - 2025-09-02
 
 ### 🚀 Features
