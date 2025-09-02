@@ -9,7 +9,7 @@ function extractPeerDependencies() {
 
 export default defineConfig({
   entry: {
-    "index": "src/index.ts",
+    index: "src/index.ts",
     "bin/index": "src/bin/index.ts",
     "benchmark/index": "src/benchmark/index.ts",
     "dev/index": "src/dev/index.ts",
@@ -32,6 +32,10 @@ export default defineConfig({
     {
       from: "src/bin/templates/server/index.ts.ejs",
       to: "dist/bin/templates/server/index.ts.ejs",
+    },
+    {
+      from: "src/bin/templates/config/tsdown.config.ts.ejs",
+      to: "dist/bin/templates/config/tsdown.config.ts.ejs",
     },
   ],
   dts: true,

@@ -3,24 +3,24 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import ejs from "ejs";
 
+type TemplateKind = "cli" | "server" | "config";
+
 export async function createTemplateFile(
-  projectName: string,
-  srcDir: string,
-  template: string,
+  targetPath: string,
+  templatePath: string,
+  kind: TemplateKind
 ) {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
-  const templatePath = path.resolve(
+  const templatePathResolved = path.resolve(
     __dirname,
     "./templates",
-    template,
-    "index.ts.ejs",
+    kind,
+    templatePath
   );
 
-  const templateSource = await fs.readFile(templatePath, "utf8");
-  const rendered = ejs.render(templateSource, {
-    projectName,
-  });
+  const templateSource = await fs.readFile(templatePathResolved, "utf8");
+  const rendered = ejs.render(templateSource);
 
-  await fs.writeFile(path.join(srcDir, "index.ts"), rendered, "utf8");
+  await fs.writeFile(targetPath, rendered, "utf8");
 }
