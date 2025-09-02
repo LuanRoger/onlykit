@@ -1,3 +1,21 @@
+## [0.2.0-1] - 2025-09-02
+
+### 🚀 Features
+
+- *(bin)* Create tsdown config template
+- *(bin)* Generate default tsdown config on init
+- *(bin)* Use root tsconfig if exists in run command
+- *(bin)* Use root tsconfig if exists in dev command
+
+### 🐛 Bug Fixes
+
+- *(bin)* Add typeRoots in tsconfig constant template
+
+### ⚙️ Miscellaneous Tasks
+
+- Update CHANGELOG
+- *(dev)* Add DOM lib
+- Update peerDeps
 ## [0.2.0-0] - 2025-09-01
 
 ### 🚀 Features
