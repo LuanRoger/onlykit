@@ -1,3 +1,13 @@
+## [0.2.0] - 2025-09-02
+
+### 🚀 Features
+
+- *(validation)* Export Zod as validation package
+- *(server/validation)* Export @hono/zod-validator as server validation
+
+### ⚙️ Miscellaneous Tasks
+
+- Update CHANGELOG
 ## [0.2.0-1] - 2025-09-02
 
 ### 🚀 Features
