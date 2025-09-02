@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "assemblyscript/std/portable.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -16,7 +15,7 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "noEmitOnError": true,
-    "types": ["portable"],
+    "types": ["types"],
     "baseUrl": "."
   },
   "exclude": ["node_modules", "**/node_modules/*"]

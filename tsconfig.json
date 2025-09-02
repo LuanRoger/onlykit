@@ -28,6 +28,6 @@
       "@lib/*": ["./lib/*"]
     }
   },
-  "include": ["./src"],
+  "include": ["./src/**/*", "./tsdown.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

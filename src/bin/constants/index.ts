@@ -3,9 +3,9 @@ export const INIT_TEMPLATES = ["cli", "server"] as const;
 export const TS_CONFIG = {
   extends: "onlykit/dev/tsconfig",
   compilerOptions: {
-    typeRoots: ["node_modules/@types", "node_modules/assemblyscript/std/types"],
+    typeRoots: ["node_modules/@types", "node_modules/onlykit/dist"],
   },
-  include: ["src/**/*.ts"],
+  include: ["src/**/*.ts", "./tsdown.config.ts"],
 };
 
 export const BIOME_CONFIG = {

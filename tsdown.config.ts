@@ -27,6 +27,7 @@ export default defineConfig({
   copy: [
     { from: "src/dev/biome/base.json", to: "dist/dev/biome/base.json" },
     { from: "src/dev/tsconfig/base.json", to: "dist/dev/tsconfig/base.json" },
+    { from: "src/dev/types/index.d.ts", to: "dist/types/index.d.ts" },
     {
       from: "src/bin/templates/cli/index.ts.ejs",
       to: "dist/bin/templates/cli/index.ts.ejs",

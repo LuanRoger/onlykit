@@ -14,7 +14,9 @@ async function buildAction(inputPath: string, options: any) {
   const { cwd, inputPath: parsedInputPath, config, output } = result;
 
   const resolvedCwd = path.resolve(cwd);
-  const inputPathResolved = path.resolve(resolvedCwd, parsedInputPath);
+  const inputPathResolved = parsedInputPath
+    ? path.resolve(resolvedCwd, parsedInputPath)
+    : undefined;
   const outputPathResolved = path.resolve(resolvedCwd, output);
   const configPathResolved = path.resolve(resolvedCwd, config);
 
@@ -28,7 +30,7 @@ async function buildAction(inputPath: string, options: any) {
       configPath: doesConfigPathExist ? configPathResolved : undefined,
     },
     false,
-    true,
+    true
   );
 
   await tsDownExecutor.execute();
@@ -37,13 +39,13 @@ async function buildAction(inputPath: string, options: any) {
 export const buildCommand = new Command()
   .command("build")
   .description("Build the project for production")
-  .argument("<inputPath>", "Path to the input file or directory.")
+  .argument("[inputPath]", "Path to the input file or directory.")
   .option("--output <path>", "Set the output entrypoint", "./dist")
   .option("--show-builder-logs", "Show builder logs", false)
   .option(
     "-c, --config <configPath>",
     "Path to the config file",
-    "./tsdown.config.ts",
+    "./tsdown.config.ts"
   )
   .option("--cwd <path>", "Set the current working directory", process.cwd())
   .action(buildAction);
