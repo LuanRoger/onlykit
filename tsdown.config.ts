@@ -18,8 +18,10 @@ export default defineConfig({
     "server/jsx/index": "src/server/jsx/index.ts",
     "server/tiny/index": "src/server/tiny/index.ts",
     "server/quick/index": "src/server/quick/index.ts",
+    "server/validation/index": "src/server/validation/index.ts",
     "client/index": "src/client/index.ts",
     "cli/index": "src/cli/index.ts",
+    "validation/index": "src/validation/index.ts",
     "wasm/index": "src/wasm/index.ts",
   },
   copy: [

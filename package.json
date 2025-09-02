@@ -4,6 +4,7 @@
   "private": false,
   "version": "0.2.0-1",
   "type": "module",
+  "types": "dist/index.d.ts",
   "sideEffects": false,
   "repository": {
     "type": "git",
@@ -89,6 +90,11 @@
       "import": "./dist/server/quick/index.js",
       "require": "./dist/server/quick/index.cjs"
     },
+    "./server/validation": {
+      "types": "./dist/server/validation/index.d.ts",
+      "import": "./dist/server/validation/index.js",
+      "require": "./dist/server/validation/index.cjs"
+    },
     "./client": {
       "types": "./dist/client/index.d.ts",
       "import": "./dist/client/index.js",
@@ -109,6 +115,11 @@
       "import": "./dist/dev/index.js",
       "require": "./dist/dev/index.cjs"
     },
+    "./validation": {
+      "types": "./dist/validation/index.d.ts",
+      "import": "./dist/validation/index.js",
+      "require": "./dist/validation/index.cjs"
+    },
     "./wasm": {
       "types": "./dist/wasm/index.d.ts",
       "import": "./dist/wasm/index.js",
@@ -125,6 +136,7 @@
   "peerDependencies": {
     "@biomejs/biome": "2.2.2",
     "@hono/node-server": "^1.19.1",
+    "@hono/zod-validator": "^0.7.2",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
@@ -139,8 +151,8 @@
     "fs-extra": "^11.3.1",
     "hono": "^4.9.2",
     "ky": "^1.8.2",
-    "nodemon": "^3.1.10",
     "mitata": "^1.0.34",
+    "nodemon": "^3.1.10",
     "ora": "^8.2.0",
     "tsdown": "^0.14.1",
     "type-fest": "^4.41.0",
