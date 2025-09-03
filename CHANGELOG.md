@@ -1,3 +1,12 @@
+## [0.2.3] - 2025-09-03
+
+### 🐛 Bug Fixes
+
+- *(wasm)* Store with hash also in the standalone environment
+
+### ⚙️ Miscellaneous Tasks
+
+- Update CHANGELOG
 ## [0.2.2] - 2025-09-03
 
 ### 🚀 Features
