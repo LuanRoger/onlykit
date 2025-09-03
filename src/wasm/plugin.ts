@@ -15,6 +15,7 @@ import {
   WASM_MAP_EXTENSION,
   WASM_TEXT_EXTENSION,
 } from "./constants";
+import { createHash } from "node:crypto";
 
 interface AssemblyScriptOptions {
   optimize?: boolean;
@@ -62,7 +63,7 @@ function getCompilerFlags(options: AssemblyScriptOptions): string[] {
 }
 
 export default function webAssemblySupport(
-  options: AssemblyScriptOptions = {},
+  options: AssemblyScriptOptions = {}
 ) {
   return {
     name: "wasm-support",
@@ -96,40 +97,40 @@ export default function webAssemblySupport(
       const wasmFileName = fileName.replace(TS_EXTENSION, WASM_EXTENSION);
       const wasmTextFileName = fileName.replace(
         TS_EXTENSION,
-        WASM_TEXT_EXTENSION,
+        WASM_TEXT_EXTENSION
       );
       const jsBindingsFileName = fileName.replace(TS_EXTENSION, JS_EXTENSION);
       const dTsFileName = fileName.replace(TS_EXTENSION, D_TS_EXTENSION);
       const sourceMapFileName = fileName.replace(
         TS_EXTENSION,
-        WASM_MAP_EXTENSION,
+        WASM_MAP_EXTENSION
       );
 
       const standaloneEnvironment = new StandaloneEnvironment(cwd);
       const tempCodeFileName = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        fileName,
+        fileName
       );
       await standaloneEnvironment.setup();
       const outFilePath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        wasmFileName,
+        wasmFileName
       );
       const textFilePath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        wasmTextFileName,
+        wasmTextFileName
       );
       const jsBindingsPath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        jsBindingsFileName,
+        jsBindingsFileName
       );
       const dTsPath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        dTsFileName,
+        dTsFileName
       );
       const sourceMapPath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        sourceMapFileName,
+        sourceMapFileName
       );
 
       await writeFile(tempCodeFileName, cleanCode);
@@ -140,20 +141,31 @@ export default function webAssemblySupport(
         outFilePath,
         "--textFile",
         textFilePath,
+        "--sourceMap",
+        sourceMapPath,
         "--bindings",
         "esm",
-        "--sourceMap",
+        "--optimize",
+        "--optimizeLevel",
+        "3",
+        "--shrinkLevel",
+        "0",
+        "--noAssert",
+        "--converge",
+        "--exportRuntime",
         ...getCompilerFlags(options),
       ];
 
       try {
-        const { error, stderr } = await asc.main(compilerOptions, {
+        const { error } = await asc.main(compilerOptions, {
           stdout: process.stdout,
           stderr: process.stderr,
         });
 
         if (error) {
-          throw new Error(`AssemblyScript compilation failed: ${stderr}`);
+          throw new Error(
+            `AssemblyScript compilation failed: ${error.message}`
+          );
         }
 
         const [
@@ -170,19 +182,33 @@ export default function webAssemblySupport(
           readJson(sourceMapPath, "utf-8"),
         ]);
 
+        const idUniqueHash = createHash("sha1")
+          .update(id)
+          .digest("hex")
+          .slice(0, 8);
+        const wasmDistPath = path.join(
+          "wasm",
+          `${idUniqueHash}-${wasmFileName}`
+        );
+        const wasmTextDistPath = path.join(
+          "wasm",
+          `${idUniqueHash}-${wasmTextFileName}`
+        );
+        const dTsDistPath = path.join("wasm", `${idUniqueHash}-${dTsFileName}`);
+
         const referenceId = (this as any).emitFile({
           type: "asset",
-          fileName: path.join("wasm", wasmFileName),
+          fileName: wasmDistPath,
           source: wasmBinaryContent,
         });
         (this as any).emitFile({
           type: "asset",
-          fileName: path.join("wasm", wasmTextFileName),
+          fileName: wasmTextDistPath,
           source: wasmTextContent,
         });
         (this as any).emitFile({
           type: "asset",
-          fileName: path.join("wasm", dTsFileName),
+          fileName: dTsDistPath,
           source: dTsContent,
         });
 
@@ -190,7 +216,7 @@ export default function webAssemblySupport(
 
         const resolvedBindings = generatedBindings.replace(
           BINDINGS_DEFAULT_WASM_URL_REGEX,
-          `new URL(import.meta.ROLLUP_FILE_URL_${referenceId})`,
+          `new URL(import.meta.ROLLUP_FILE_URL_${referenceId})`
         );
         return {
           code: resolvedBindings,
@@ -199,7 +225,7 @@ export default function webAssemblySupport(
       } catch (error) {
         if (error instanceof Error) {
           throw new Error(
-            `AssemblyScript compilation failed: ${error.message}`,
+            `AssemblyScript compilation failed: ${error.message}`
           );
         }
       }

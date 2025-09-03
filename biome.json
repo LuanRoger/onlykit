@@ -21,7 +21,9 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noControlCharactersInRegex": "off"
+        "noControlCharactersInRegex": "off",
+        "noRedeclare": "warn",
+        "noShadowRestrictedNames": "warn"
       }
     }
   },
