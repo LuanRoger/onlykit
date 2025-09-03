@@ -1,3 +1,16 @@
+## [0.2.2] - 2025-09-03
+
+### 🚀 Features
+
+- *(wasm)* Support build multiple files with same name
+
+### 🐛 Bug Fixes
+
+- *(dev)* Add all types from AssemblyScript portable
+
+### ⚙️ Miscellaneous Tasks
+
+- Update CHANGELOG
 ## [0.2.1] - 2025-09-02
 
 ### 🚀 Features
