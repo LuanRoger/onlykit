@@ -92,24 +92,23 @@ export default function webAssemblySupport(
       }
 
       const cleanCode = code.replace(WASM_DIRECTIVE_REGEX, "");
-      const fileName = path.basename(id);
+      const idUniqueHash = createHash("sha1")
+        .update(id)
+        .digest("hex")
+        .slice(0, 8);
+      const fileName = `${idUniqueHash}-${path.basename(id, TS_EXTENSION)}`;
       const cwd = process.cwd();
-      const wasmFileName = fileName.replace(TS_EXTENSION, WASM_EXTENSION);
-      const wasmTextFileName = fileName.replace(
-        TS_EXTENSION,
-        WASM_TEXT_EXTENSION
-      );
-      const jsBindingsFileName = fileName.replace(TS_EXTENSION, JS_EXTENSION);
-      const dTsFileName = fileName.replace(TS_EXTENSION, D_TS_EXTENSION);
-      const sourceMapFileName = fileName.replace(
-        TS_EXTENSION,
-        WASM_MAP_EXTENSION
-      );
+      const tsFilePath = `${fileName}${TS_EXTENSION}`;
+      const wasmFileName = `${fileName}${WASM_EXTENSION}`;
+      const wasmTextFileName = `${fileName}${WASM_TEXT_EXTENSION}`;
+      const jsBindingsFileName = `${fileName}${JS_EXTENSION}`;
+      const dTsFileName = `${fileName}${D_TS_EXTENSION}`;
+      const sourceMapFileName = `${fileName}${WASM_MAP_EXTENSION}`;
 
       const standaloneEnvironment = new StandaloneEnvironment(cwd);
       const tempCodeFileName = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        fileName
+        tsFilePath
       );
       await standaloneEnvironment.setup();
       const outFilePath = path.join(
@@ -182,19 +181,9 @@ export default function webAssemblySupport(
           readJson(sourceMapPath, "utf-8"),
         ]);
 
-        const idUniqueHash = createHash("sha1")
-          .update(id)
-          .digest("hex")
-          .slice(0, 8);
-        const wasmDistPath = path.join(
-          "wasm",
-          `${idUniqueHash}-${wasmFileName}`
-        );
-        const wasmTextDistPath = path.join(
-          "wasm",
-          `${idUniqueHash}-${wasmTextFileName}`
-        );
-        const dTsDistPath = path.join("wasm", `${idUniqueHash}-${dTsFileName}`);
+        const wasmDistPath = path.join("wasm", wasmFileName);
+        const wasmTextDistPath = path.join("wasm", wasmTextFileName);
+        const dTsDistPath = path.join("wasm", dTsFileName);
 
         const referenceId = (this as any).emitFile({
           type: "asset",
@@ -212,7 +201,11 @@ export default function webAssemblySupport(
           source: dTsContent,
         });
 
-        await standaloneEnvironment.clean();
+        try {
+          await standaloneEnvironment.clean();
+        } catch (error) {
+          console.warn("Not possible to clean standalone environment:", error);
+        }
 
         const resolvedBindings = generatedBindings.replace(
           BINDINGS_DEFAULT_WASM_URL_REGEX,
