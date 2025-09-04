@@ -3,7 +3,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import asc from "assemblyscript/asc";
-import { readJson } from "fs-extra";
+import { readJson, remove } from "fs-extra";
 import { StandaloneEnvironment } from "@/bin/standalone";
 import {
   BINDINGS_DEFAULT_WASM_URL_REGEX,
@@ -99,6 +99,7 @@ export default function webAssemblySupport(
       const fileName = `${idUniqueHash}-${path.basename(id, TS_EXTENSION)}`;
       const cwd = process.cwd();
       const tsFilePath = `${fileName}${TS_EXTENSION}`;
+      const tempTsFilePath = path.join(path.dirname(id), tsFilePath);
       const wasmFileName = `${fileName}${WASM_EXTENSION}`;
       const wasmTextFileName = `${fileName}${WASM_TEXT_EXTENSION}`;
       const jsBindingsFileName = `${fileName}${JS_EXTENSION}`;
@@ -106,10 +107,6 @@ export default function webAssemblySupport(
       const sourceMapFileName = `${fileName}${WASM_MAP_EXTENSION}`;
 
       const standaloneEnvironment = new StandaloneEnvironment(cwd);
-      const tempCodeFileName = path.join(
-        standaloneEnvironment.standaloneOutputPath,
-        tsFilePath
-      );
       await standaloneEnvironment.setup();
       const outFilePath = path.join(
         standaloneEnvironment.standaloneOutputPath,
@@ -132,10 +129,10 @@ export default function webAssemblySupport(
         sourceMapFileName
       );
 
-      await writeFile(tempCodeFileName, cleanCode);
+      await writeFile(tempTsFilePath, cleanCode);
 
       const compilerOptions = [
-        tempCodeFileName,
+        tempTsFilePath,
         "--outFile",
         outFilePath,
         "--textFile",
@@ -147,8 +144,6 @@ export default function webAssemblySupport(
         "--optimize",
         "--optimizeLevel",
         "3",
-        "--shrinkLevel",
-        "0",
         "--noAssert",
         "--converge",
         "--exportRuntime",
@@ -179,6 +174,7 @@ export default function webAssemblySupport(
           readFile(jsBindingsPath, "utf-8"),
           readFile(dTsPath, "utf-8"),
           readJson(sourceMapPath, "utf-8"),
+          remove(tempTsFilePath),
         ]);
 
         const wasmDistPath = path.join("wasm", wasmFileName);
@@ -203,8 +199,8 @@ export default function webAssemblySupport(
 
         try {
           await standaloneEnvironment.clean();
-        } catch (error) {
-          console.warn("Not possible to clean standalone environment:", error);
+        } catch {
+          (this as any).warn("Not possible to clean standalone environment");
         }
 
         const resolvedBindings = generatedBindings.replace(
