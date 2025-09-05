@@ -131,7 +131,8 @@
   "files": [
     "dist",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "README.md"
   ],
   "peerDependencies": {
     "@biomejs/biome": "2.2.2",
