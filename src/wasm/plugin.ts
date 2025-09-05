@@ -3,7 +3,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import asc from "assemblyscript/asc";
-import { readJson, remove } from "fs-extra";
+import { remove } from "fs-extra";
 import { StandaloneEnvironment } from "@/bin/standalone";
 import {
   BINDINGS_DEFAULT_WASM_URL_REGEX,
@@ -12,7 +12,6 @@ import {
   TS_EXTENSION,
   WASM_DIRECTIVE_REGEX,
   WASM_EXTENSION,
-  WASM_MAP_EXTENSION,
   WASM_TEXT_EXTENSION,
 } from "./constants";
 import { createHash } from "node:crypto";
@@ -62,6 +61,11 @@ function getCompilerFlags(options: AssemblyScriptOptions): string[] {
   return flags;
 }
 
+function bytesToPages(bytes: number) {
+  const PAGE = 64 * 1024; // 64KiB
+  return Math.max(1, Math.floor(bytes / PAGE));
+}
+
 export default function webAssemblySupport(
   options: AssemblyScriptOptions = {}
 ) {
@@ -104,7 +108,6 @@ export default function webAssemblySupport(
       const wasmTextFileName = `${fileName}${WASM_TEXT_EXTENSION}`;
       const jsBindingsFileName = `${fileName}${JS_EXTENSION}`;
       const dTsFileName = `${fileName}${D_TS_EXTENSION}`;
-      const sourceMapFileName = `${fileName}${WASM_MAP_EXTENSION}`;
 
       const standaloneEnvironment = new StandaloneEnvironment(cwd);
       await standaloneEnvironment.setup();
@@ -124,10 +127,6 @@ export default function webAssemblySupport(
         standaloneEnvironment.standaloneOutputPath,
         dTsFileName
       );
-      const sourceMapPath = path.join(
-        standaloneEnvironment.standaloneOutputPath,
-        sourceMapFileName
-      );
 
       await writeFile(tempTsFilePath, cleanCode);
 
@@ -137,16 +136,12 @@ export default function webAssemblySupport(
         outFilePath,
         "--textFile",
         textFilePath,
-        "--sourceMap",
-        sourceMapPath,
         "--bindings",
         "esm",
-        "--optimize",
-        "--optimizeLevel",
-        "3",
+        "-Ospeed",
         "--noAssert",
         "--converge",
-        "--exportRuntime",
+        "--optimize",
         ...getCompilerFlags(options),
       ];
 
@@ -167,13 +162,11 @@ export default function webAssemblySupport(
           wasmTextContent,
           generatedBindings,
           dTsContent,
-          sourceMap,
         ] = await Promise.all([
           readFile(outFilePath),
           readFile(textFilePath, "utf-8"),
           readFile(jsBindingsPath, "utf-8"),
           readFile(dTsPath, "utf-8"),
-          readJson(sourceMapPath, "utf-8"),
           remove(tempTsFilePath),
         ]);
 
@@ -207,10 +200,7 @@ export default function webAssemblySupport(
           BINDINGS_DEFAULT_WASM_URL_REGEX,
           `new URL(import.meta.ROLLUP_FILE_URL_${referenceId})`
         );
-        return {
-          code: resolvedBindings,
-          map: sourceMap,
-        };
+        return resolvedBindings;
       } catch (error) {
         if (error instanceof Error) {
           throw new Error(
