@@ -27,7 +27,7 @@ async function initAction(projectName: string, options: any) {
     const indexTemplateTargetPath = path.join(srcDir, "index.ts");
     const tsDownConfigTemplateTargetPath = path.join(
       projectRoot,
-      "tsdown.config.ts"
+      "tsdown.config.ts",
     );
 
     await fs.mkdir(srcDir, { recursive: true });
@@ -44,12 +44,12 @@ async function initAction(projectName: string, options: any) {
       await createTemplateFile(
         indexTemplateTargetPath,
         "index.ts.ejs",
-        template
+        template,
       ),
       await createTemplateFile(
         tsDownConfigTemplateTargetPath,
         "tsdown.config.ts.ejs",
-        "config"
+        "config",
       ),
     ]);
 
@@ -69,6 +69,6 @@ export const initCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd()
+    process.cwd(),
   )
   .action(initAction);

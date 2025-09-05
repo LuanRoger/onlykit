@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: tsdown has no exported type for plugin */
 
+import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import asc from "assemblyscript/asc";
@@ -14,7 +15,6 @@ import {
   WASM_EXTENSION,
   WASM_TEXT_EXTENSION,
 } from "./constants";
-import { createHash } from "node:crypto";
 
 interface AssemblyScriptOptions {
   optimize?: boolean;
@@ -61,13 +61,8 @@ function getCompilerFlags(options: AssemblyScriptOptions): string[] {
   return flags;
 }
 
-function bytesToPages(bytes: number) {
-  const PAGE = 64 * 1024; // 64KiB
-  return Math.max(1, Math.floor(bytes / PAGE));
-}
-
 export default function webAssemblySupport(
-  options: AssemblyScriptOptions = {}
+  options: AssemblyScriptOptions = {},
 ) {
   return {
     name: "wasm-support",
@@ -113,19 +108,19 @@ export default function webAssemblySupport(
       await standaloneEnvironment.setup();
       const outFilePath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        wasmFileName
+        wasmFileName,
       );
       const textFilePath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        wasmTextFileName
+        wasmTextFileName,
       );
       const jsBindingsPath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        jsBindingsFileName
+        jsBindingsFileName,
       );
       const dTsPath = path.join(
         standaloneEnvironment.standaloneOutputPath,
-        dTsFileName
+        dTsFileName,
       );
 
       await writeFile(tempTsFilePath, cleanCode);
@@ -153,7 +148,7 @@ export default function webAssemblySupport(
 
         if (error) {
           throw new Error(
-            `AssemblyScript compilation failed: ${error.message}`
+            `AssemblyScript compilation failed: ${error.message}`,
           );
         }
 
@@ -198,13 +193,13 @@ export default function webAssemblySupport(
 
         const resolvedBindings = generatedBindings.replace(
           BINDINGS_DEFAULT_WASM_URL_REGEX,
-          `new URL(import.meta.ROLLUP_FILE_URL_${referenceId})`
+          `new URL(import.meta.ROLLUP_FILE_URL_${referenceId})`,
         );
         return resolvedBindings;
       } catch (error) {
         if (error instanceof Error) {
           throw new Error(
-            `AssemblyScript compilation failed: ${error.message}`
+            `AssemblyScript compilation failed: ${error.message}`,
           );
         }
       }

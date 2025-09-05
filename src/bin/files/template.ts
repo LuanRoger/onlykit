@@ -8,7 +8,7 @@ type TemplateKind = "cli" | "server" | "config";
 export async function createTemplateFile(
   targetPath: string,
   templatePath: string,
-  kind: TemplateKind
+  kind: TemplateKind,
 ) {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
@@ -16,7 +16,7 @@ export async function createTemplateFile(
     __dirname,
     "./templates",
     kind,
-    templatePath
+    templatePath,
   );
 
   const templateSource = await fs.readFile(templatePathResolved, "utf8");

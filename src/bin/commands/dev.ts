@@ -51,7 +51,7 @@ async function devAction(inputPath: string, options: any) {
         configPath: doesTsDownConfigExist ? tsdownConfig : undefined,
       },
       !showBuilderLogs,
-      true
+      true,
     );
     await initialBuildExecutor.execute();
   }
@@ -64,7 +64,7 @@ async function devAction(inputPath: string, options: any) {
       watch: true,
     },
     !showBuilderLogs,
-    false
+    false,
   );
   const nodemonExecutor = new NodemonExecuteExecutor(
     {
@@ -72,7 +72,7 @@ async function devAction(inputPath: string, options: any) {
       watchPath: outputPathResolved,
     },
     !showRunnerLogs,
-    false
+    false,
   );
   await Promise.all([tsDownExecutor.execute(), nodemonExecutor.execute()]);
 }
@@ -82,7 +82,7 @@ export const devCommand = new Command()
   .description("Start the development server")
   .argument(
     "<inputPath>",
-    "Path to the input file or directory. This will be watched by the daemon."
+    "Path to the input file or directory. This will be watched by the daemon.",
   )
   .option("--output <path>", "Set the output directory", "./dist")
   .option("--execute <filePath>", "File to execute after build", "index.mjs")
@@ -91,6 +91,6 @@ export const devCommand = new Command()
   .option(
     "-c, --cwd <path>",
     "Set the current working directory",
-    process.cwd()
+    process.cwd(),
   )
   .action(devAction);

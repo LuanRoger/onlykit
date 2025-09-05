@@ -30,7 +30,7 @@ async function buildAction(inputPath: string, options: any) {
       configPath: doesConfigPathExist ? configPathResolved : undefined,
     },
     false,
-    true
+    true,
   );
 
   await tsDownExecutor.execute();
@@ -45,7 +45,7 @@ export const buildCommand = new Command()
   .option(
     "-c, --config <configPath>",
     "Path to the config file",
-    "./tsdown.config.ts"
+    "./tsdown.config.ts",
   )
   .option("--cwd <path>", "Set the current working directory", process.cwd())
   .action(buildAction);

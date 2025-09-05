@@ -1,5 +1,6 @@
 import path from "node:path";
 import { Command } from "commander";
+import { exists } from "fs-extra";
 import ora from "ora";
 import { createTemplateFile, createTsConfig } from "../files";
 import {
@@ -9,7 +10,6 @@ import {
 import { StandaloneEnvironment } from "../standalone";
 import { addExitHook } from "../utils/process";
 import { runSchema } from "./schemas";
-import { exists } from "fs-extra";
 
 // biome-ignore lint/suspicious/noExplicitAny: The type of options is not known at this point, so we use any.
 async function runAction(entryPoint: string, options: any) {
@@ -26,7 +26,7 @@ async function runAction(entryPoint: string, options: any) {
   const tsDownConfig = path.join(cwd, "tsdown.config.ts");
   const tempTsdownConfig = path.join(
     standaloneEnv.standaloneOutputPath,
-    "tsdown.config.ts"
+    "tsdown.config.ts",
   );
 
   const [doesTsConfigExist, doesTsDownConfigExist] = await Promise.all([
@@ -44,7 +44,7 @@ async function runAction(entryPoint: string, options: any) {
     await createTemplateFile(
       tempTsdownConfig,
       "tsdown.config.ts.ejs",
-      "config"
+      "config",
     );
   }
   if (!tsconfig && !doesTsConfigExist) {
@@ -59,7 +59,7 @@ async function runAction(entryPoint: string, options: any) {
       configPath: doesTsDownConfigExist ? tsDownConfig : tempTsdownConfig,
     },
     true,
-    false
+    false,
   );
   await tsDownExecutor.execute();
 
