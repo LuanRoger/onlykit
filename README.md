@@ -2,6 +2,10 @@
 
 > Because is the only dependency you need.
 
+[![npm version](https://img.shields.io/npm/v/onlykit?style=flat&logo=npm&labelColor=CB3837)](https://www.npmjs.com/package/onlykit)
+[![Checked with Biome](https://img.shields.io/badge/Checked_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
+[![GitHub License](https://img.shields.io/github/license/LuanRoger/onlykit?style=flat)](https://github.com/LuanRoger/onlykit/blob/main/LICENSE)
+
 onlykit is a meta-package that aggregates essential dependencies to build CLI and web applications with Node.
 
 Install onlykit already gives you the main dependencies to run, build, develop, lint your application. On top of that, it also provides a CLI that wraps common commands to make your life easier, providing good defaults and sensible options.
@@ -95,7 +99,8 @@ The dependencies are grouped by functionality and can be imported from the corre
 ```typescript
 import { chalk } from "onlykit/cli";
 import { Hono } from "onlykit/server";
-impo;
+import { z } from "onlykit/validation";
+// ...
 ```
 
 ## WASM Support (`use wasm`)
