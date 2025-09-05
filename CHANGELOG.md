@@ -1,3 +1,23 @@
+## [1.0.0] - 2025-09-05
+
+### 🐛 Bug Fixes
+
+- *(wasm)* Use the same path to compile
+- *(client)* Export default the ky default
+
+### ⚡ Performance
+
+- *(wasm)* Adjust compile params for speed
+
+### 🎨 Styling
+
+- Run Biome
+
+### ⚙️ Miscellaneous Tasks
+
+- Update CHANGELOG
+- Add README
+- Add badges in README
 ## [0.2.3] - 2025-09-03
 
 ### 🐛 Bug Fixes
